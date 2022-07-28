@@ -1,206 +1,175 @@
-"use strict";
+"use strict"
 
-let fieldOfCells = ["", "", "", "", "", "", "", "", ""];
-let stepsCounter = 0;
-let isGameStarted = false;
-let isPlayButtonAvailible = true;
-let isRefreshButtonAvailible = false;
-let isGameVsComputer = false;
-const symbolOfX = "X";
-const symbolOfO = "O";
-const cellIdName = "cell";
-const cellClassName = "field__cell";
-const disableButtonClassName = "controll-buttons__controll-button_disabled";
-const messageHeadingClassName = "message";
-const messageHeadingId = "messageHeading";
-const playButtonId = "playButton";
-const refreshButtonId = "refreshButton";
-const playerVsPlayerButtonId = "playerVsPlayerButton";
-const playerVsComputerButtonId = "playerVsComputerButton"; 
-const messageHeading = document.getElementById(messageHeadingId);
-const allCells = document.getElementsByClassName(cellClassName);
-const playButton = document.getElementById(playButtonId);
-const refreshButton = document.getElementById(refreshButtonId);
-const playerVsPlayerButton = document.getElementById(playerVsPlayerButtonId);
-const playerVsComputerButton = document.getElementById(playerVsComputerButtonId);
-
-function onPlayClick() {
-    if (!isGameStarted && isPlayButtonAvailible) {
-        isGameStarted = true;
-        isPlayButtonAvailible = false;
-        isRefreshButtonAvailible = true;
-        
-        playButton.classList.add(disableButtonClassName);
-        refreshButton.classList.remove(disableButtonClassName);
+class CellsField {
+    constructor() {
+        this.field = ["", "", "", "", "", "", "", "", ""]
     }
-}
 
-function onRefreshClick() {
-    if (isRefreshButtonAvailible) {
-        resetProperties();
+    setSymbolToCellField(cellNumber, symbol) {
+        this.field[cellNumber] = symbol;
     }
+
+    isCellEmpty(cellNumber) {
+        if(this.field[cellNumber] === "") {
+            return true;
+        }
+        return false;
+    }
+
+    isWinCombination(currentSymbol) {
+        if (this.field[0] === currentSymbol 
+            && this.field[1] === currentSymbol 
+            && this.field[2] === currentSymbol) {
+            return true;
+        } else if (
+            this.field[3] === currentSymbol 
+            && this.field[4] === currentSymbol 
+            && this.field[5] === currentSymbol
+        ) {
+            return true;
+        } else if (
+            this.field[6] === currentSymbol &&
+            this.field[7] === currentSymbol &&
+            this.field[8] === currentSymbol
+        ) {
+            return true;
+        } else if (
+            this.field[0] === currentSymbol 
+            && this.field[3] === currentSymbol 
+            && this.field[6] === currentSymbol
+        ) {
+            return true;
+        } else if (
+            this.field[1] === currentSymbol 
+            && this.field[4] === currentSymbol 
+            && this.field[7] === currentSymbol
+        ) {
+            return true;
+        } else if (
+            this.field[2] === currentSymbol 
+            && this.field[5] === currentSymbol 
+            && this.field[8] === currentSymbol
+        ) {
+            return true;
+        } else if (
+            this.field[0] === currentSymbol 
+            && this.field[4] === currentSymbol 
+            && this.field[8] === currentSymbol
+        ) {
+            return true;
+        } else if (
+            this.field[2] === currentSymbol 
+            && this.field[4] === currentSymbol 
+            && this.field[6] === currentSymbol
+        ) {
+            return true;
+        }
+        return false;
+    }
+
 }
 
-function on1Vs1Click() {
-    isGameVsComputer = false;
+class TicTacToeGame {
+    constructor(_symbolOfO, _symbolOfX) {
+        this.symbolOfX = _symbolOfX;
+        this.symbolOfO = _symbolOfO;
+        this.stepsCounter = 0;
+        this.isGameStarts = true;
+    }
 
-    playerVsPlayerButton.classList.remove(disableButtonClassName);
-    playerVsComputerButton.classList.add(disableButtonClassName);
+    increaseStepsCounter() {
+        this.stepsCounter++;
+    }
 
-    resetProperties();
+    getSymbolCurrentlyGoes(stepsCounter) {
+        if(stepsCounter % 2 === 0) {
+            return this.symbolOfX;
+        }
+        return this.symbolOfO;
+    }
+
+    toggleIsGameStarts() {
+        this.isGameStarts = !this.isGameStarts;
+    }
+
 }
 
-function on1vsComputerClick() {
-    playerVsComputerButton.classList.remove(disableButtonClassName);
-    playerVsPlayerButton.classList.add(disableButtonClassName);
-    isGameVsComputer = true;
+class ComputerStep {
+    constructor () {
+        this.isPlayerPlaysVsComputer = true;
+    }
+
+    generateCellIdForComputerStep(isCellEmpty) {
+        while (true) {
+            const randomCellId = Math.floor(Math.random() * 9);
+            if (isCellEmpty[randomCellId] === "") {
+                return randomCellId;
+            }
+        }
+    }
     
-    resetProperties();
+    getComputerStepCellId(stepsCounter, isCellEmpty) {
+        if (this.isPlayerPlaysVsComputer
+            && stepsCounter % 2 !== 0 
+            && stepsCounter <= 8) {
+            const randomCellId = this.generateCellIdForComputerStep(isCellEmpty);
+            return randomCellId
+        }
+    }
+
+    toggleIsGameVsComputer() {
+        this.isPlayerPlaysVsComputer = !this.isPlayerPlaysVsComputer;
+    }
+
 }
+
+class HtmlElement {
+    constructor (_idName) {
+        this.idName = _idName;
+    };
+
+    setElementInnerHtml(elementId, elementInnerHtml) {
+        console.log(elementId)
+        const currentElement = document.getElementById(`${this.idName}${elementId}`);
+        currentElement.innerHTML = elementInnerHtml;
+    }
+}
+
+const cellsField = new CellsField();
+const ticTacToeGame = new TicTacToeGame("O", "X");
+const currentCell = new HtmlElement("cell");
+const computerStep = new ComputerStep();
 
 function onCellClick(event) {
-    if (isGameStarted) {
-        const clickedCellId = event.target.id.slice(-1);
-        makeStep(clickedCellId);
-        isGameEnds();
-        computerGoes(); 
-        isGameEnds();
+    const clickedCellId = event.target.id.slice(-1);
+
+    if(!cellsField.isCellEmpty(clickedCellId) || ticTacToeGame.isGameStarts === false) {
+        return
     }
-}
 
-function resetProperties() {
-    fieldOfCells = ["", "", "", "", "", "", "", "", ""];
-    stepsCounter = 0;
-    isGameStarted = true;
-    messageHeading.innerHTML = "";
-    isPlayButtonAvailible = false;
-    isRefreshButtonAvailible = true;
+    let symbolCurrentlyGoes = ticTacToeGame.getSymbolCurrentlyGoes(ticTacToeGame.stepsCounter);
+    cellsField.setSymbolToCellField(clickedCellId, symbolCurrentlyGoes);
+    currentCell.setElementInnerHtml(clickedCellId, symbolCurrentlyGoes);
+    ticTacToeGame.increaseStepsCounter();
 
-    playButton.classList.add(disableButtonClassName);
-    refreshButton.classList.remove(disableButtonClassName);
-    
-    setCellsEmpty(allCells);
-}
-
-function setCellsEmpty(cells) {
-    for (let cellId = 0; cellId < cells.length; cellId++) {
-        cells[cellId].innerHTML = "";
+    if (cellsField.isWinCombination(symbolCurrentlyGoes)) {
+        console.log(symbolCurrentlyGoes + "win")
+        ticTacToeGame.toggleIsGameStarts();
+        console.log(ticTacToeGame.isGameStarts)
     }
-}
 
-function chooseSymbolWhichGoes(stepsCounter) {
-    if (stepsCounter % 2 === 0) {
-        return symbolOfX;
+    if (computerStep.isPlayerPlaysVsComputer && ticTacToeGame.isGameStarts) {
+        symbolCurrentlyGoes = ticTacToeGame.getSymbolCurrentlyGoes(ticTacToeGame.stepsCounter);
+        const computerStepCellId = computerStep.getComputerStepCellId(ticTacToeGame.stepsCounter, cellsField.field);
+        cellsField.setSymbolToCellField(computerStepCellId, symbolCurrentlyGoes);
+        currentCell.setElementInnerHtml(computerStepCellId, symbolCurrentlyGoes);
+        ticTacToeGame.increaseStepsCounter();
     }
-    return symbolOfO;
-}
 
-function isWin(symbol) {
-    if (fieldOfCells[0] === symbol 
-        && fieldOfCells[1] === symbol 
-        && fieldOfCells[2] === symbol) {
-        return true;
-    } else if (
-        fieldOfCells[3] === symbol 
-        && fieldOfCells[4] === symbol 
-        && fieldOfCells[5] === symbol
-    ) {
-        return true;
-    } else if (
-        fieldOfCells[6] === symbol &&
-        fieldOfCells[7] === symbol &&
-        fieldOfCells[8] === symbol
-    ) {
-        return true;
-    } else if (
-        fieldOfCells[0] === symbol 
-        && fieldOfCells[3] === symbol 
-        && fieldOfCells[6] === symbol
-    ) {
-        return true;
-    } else if (
-        fieldOfCells[1] === symbol 
-        && fieldOfCells[4] === symbol 
-        && fieldOfCells[7] === symbol
-    ) {
-        return true;
-    } else if (
-        fieldOfCells[2] === symbol 
-        && fieldOfCells[5] === symbol 
-        && fieldOfCells[8] === symbol
-    ) {
-        return true;
-    } else if (
-        fieldOfCells[0] === symbol 
-        && fieldOfCells[4] === symbol 
-        && fieldOfCells[8] === symbol
-    ) {
-        return true;
-    } else if (
-        fieldOfCells[2] === symbol 
-        && fieldOfCells[4] === symbol 
-        && fieldOfCells[6] === symbol
-    ) {
-        return true;
+    if (cellsField.isWinCombination(symbolCurrentlyGoes)) {
+        console.log(symbolCurrentlyGoes + "win")
+        ticTacToeGame.toggleIsGameStarts();
+        console.log(ticTacToeGame.isGameStarts)
     }
-    return false;
-}
 
-function isDraw(fieldOfCells) {
-    const isAllCellsTaken = fieldOfCells.every(cell => cell === symbolOfX || cell === symbolOfO);
-    return isAllCellsTaken;
-}
-
-function isGameEnds() {
-    if (stepsCounter >= 4) {
-        if (isWin(symbolOfX)) {
-            messageHeading.innerHTML = `${symbolOfX.toUpperCase()} wins`;
-            isGameStarted = false;
-        }
-        if (isWin(symbolOfO)) {
-            messageHeading.innerHTML = `${symbolOfO.toUpperCase()} wins`;
-            isGameStarted = false;
-        }
-        if (isDraw(fieldOfCells)) {
-            messageHeading.innerHTML = "Draw";
-            isGameStarted = false;
-        }
-    }
-}
-
-function generateCellIdForComputerStep() {
-    while (true) {
-        const randomId = Math.floor(Math.random() * 9);
-        if (fieldOfCells[randomId] === "" 
-            && fieldOfCells[randomId] !== symbolOfX 
-            && fieldOfCells[randomId] !== symbolOfO) {
-            return randomId;
-        }
-    }
-}
-
-function computerGoes() {
-    if (isGameVsComputer 
-        && stepsCounter % 2 !== 0 
-        && stepsCounter <= 8) {
-        const id = generateCellIdForComputerStep();
-        makeStep(id);
-    }
-}
-
-function increaseStepsCounter() {
-    stepsCounter++;
-}
-
-function makeStep(id) {
-    const whichGoes = chooseSymbolWhichGoes(stepsCounter);
-    if (fieldOfCells[id] === "" && fieldOfCells[id] !== symbolOfX && fieldOfCells[id] !== symbolOfO) {
-
-        fieldOfCells[id] = whichGoes;
-
-        increaseStepsCounter();
-
-        const currentCell = document.getElementById(`${cellIdName}${id}`);
-        currentCell.innerHTML = whichGoes;
-    }
 }
