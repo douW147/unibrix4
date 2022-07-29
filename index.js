@@ -67,6 +67,11 @@ class CellsField {
         return false;
     }
 
+    isDraw() {
+        const isAllCellsTaken = this.field.every(cell => cell !== "");
+        return isAllCellsTaken;
+    }
+
 }
 
 class TicTacToeGame {
@@ -75,6 +80,7 @@ class TicTacToeGame {
         this.symbolOfO = _symbolOfO;
         this.stepsCounter = 0;
         this.isGameStarts = true;
+        this.isPlayerPlaysVsComputer = false;
     }
 
     increaseStepsCounter() {
@@ -90,13 +96,6 @@ class TicTacToeGame {
 
     toggleIsGameStarts() {
         this.isGameStarts = !this.isGameStarts;
-    }
-
-}
-
-class ComputerStep {
-    constructor () {
-        this.isPlayerPlaysVsComputer = true;
     }
 
     generateCellIdForComputerStep(isCellEmpty) {
@@ -121,7 +120,17 @@ class ComputerStep {
         this.isPlayerPlaysVsComputer = !this.isPlayerPlaysVsComputer;
     }
 
+    makePlayerStep(clickedCellId, currentCell) {
+        if(this.isGameStarts === false) {
+            return
+        }
+        const symbolCurrentlyGoes = this.getSymbolCurrentlyGoes(this.stepsCounter);
+        currentCell.setElementInnerHtml(clickedCellId, symbolCurrentlyGoes);
+        this.increaseStepsCounter();
+    }
+
 }
+
 
 class HtmlElement {
     constructor (_idName) {
@@ -138,38 +147,28 @@ class HtmlElement {
 const cellsField = new CellsField();
 const ticTacToeGame = new TicTacToeGame("O", "X");
 const currentCell = new HtmlElement("cell");
-const computerStep = new ComputerStep();
 
 function onCellClick(event) {
     const clickedCellId = event.target.id.slice(-1);
+    let symbolCurrentlyGoes = ticTacToeGame.getSymbolCurrentlyGoes();
 
-    if(!cellsField.isCellEmpty(clickedCellId) || ticTacToeGame.isGameStarts === false) {
-        return
+    if(cellsField.isCellEmpty(clickedCellId)) {
+        ticTacToeGame.makePlayerStep(clickedCellId, currentCell);
+        cellsField.setSymbolToCellField(clickedCellId, symbolCurrentlyGoes);
     }
 
-    let symbolCurrentlyGoes = ticTacToeGame.getSymbolCurrentlyGoes(ticTacToeGame.stepsCounter);
-    cellsField.setSymbolToCellField(clickedCellId, symbolCurrentlyGoes);
-    currentCell.setElementInnerHtml(clickedCellId, symbolCurrentlyGoes);
-    ticTacToeGame.increaseStepsCounter();
-
-    if (cellsField.isWinCombination(symbolCurrentlyGoes)) {
+    if(cellsField.isWinCombination(symbolCurrentlyGoes)){
         console.log(symbolCurrentlyGoes + "win")
         ticTacToeGame.toggleIsGameStarts();
-        console.log(ticTacToeGame.isGameStarts)
     }
 
-    if (computerStep.isPlayerPlaysVsComputer && ticTacToeGame.isGameStarts) {
-        symbolCurrentlyGoes = ticTacToeGame.getSymbolCurrentlyGoes(ticTacToeGame.stepsCounter);
-        const computerStepCellId = computerStep.getComputerStepCellId(ticTacToeGame.stepsCounter, cellsField.field);
-        cellsField.setSymbolToCellField(computerStepCellId, symbolCurrentlyGoes);
-        currentCell.setElementInnerHtml(computerStepCellId, symbolCurrentlyGoes);
-        ticTacToeGame.increaseStepsCounter();
-    }
-
-    if (cellsField.isWinCombination(symbolCurrentlyGoes)) {
-        console.log(symbolCurrentlyGoes + "win")
+    if(cellsField.isDraw()){
+        console.log("draw")
         ticTacToeGame.toggleIsGameStarts();
-        console.log(ticTacToeGame.isGameStarts)
     }
 
+    if(ticTacToeGame.isPlayerPlaysVsComputer) {
+
+    }
+    
 }
