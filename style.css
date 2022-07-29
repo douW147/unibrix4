@@ -43,6 +43,7 @@
 
 .controll-buttons {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     margin: 2% 0;
@@ -84,6 +85,10 @@
         width: 100px;
         height: 100px;
         font-size: 5rem;
+    }
+
+    .controll-buttons__controll-button {
+        width: 40%;
     }
 
 }

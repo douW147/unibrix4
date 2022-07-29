@@ -10,16 +10,16 @@
 </head>
 <body>
     <div class="controll-buttons">
-        <button onClick="onPlayClick()" id="playButton" class="controll-buttons__controll-button">
+        <button onClick="onPlayClick(event)" id="playButton" class="controll-buttons__controll-button">
             <i class="fa-solid fa-play"></i>
         </button>
         <button onClick="onRefreshClick()" id="refreshButton" class="controll-buttons__controll-button controll-buttons__controll-button_disabled">
             <i class="fa-solid fa-arrow-rotate-right"></i>
         </button>
-        <button onClick="on1Vs1Click()" id="playerVsPlayerButton" class="controll-buttons__controll-button controll-buttons__controll-button_sm">
+        <button onClick="onPlayerVsPlayerButtonClick()" id="playerVsPlayerButton" value="false" class="controll-buttons__controll-button controll-buttons__controll-button_sm">
             1 vs 1
         </button>
-        <button onClick="on1vsComputerClick()" id="playerVsComputerButton" class="controll-buttons__controll-button controll-buttons__controll-button_sm controll-buttons__controll-button_disabled">
+        <button onClick="onPlayerVsComputerButtonClick()" id="playerVsComputerButton" value="true" class="controll-buttons__controll-button controll-buttons__controll-button_sm controll-buttons__controll-button_disabled">
             1 vs computer
         </button>
     </div>
