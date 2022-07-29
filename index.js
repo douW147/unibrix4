@@ -188,14 +188,6 @@ class TicTacToeGame {
         this.isPLayButtonAvailible = false;
     }
 
-    setPlayerVsComputerGameMode() {
-        this.computerAsGamePlayer.isGameVsComputer = true;
-    }
-
-    setPlayerVsPlayerGameMode() {
-        this.computerAsGamePlayer.isGameVsComputer = false;
-    }
-
     toggleIsGameStarts() {
         this.isGameStarts = !this.isGameStarts;
     }
@@ -283,7 +275,7 @@ function onPlayerVsPlayerButtonClick() {
         return;
     }
     ticTacToeGame.refreshGame();
-    ticTacToeGame.setPlayerVsPlayerGameMode();
+    ticTacToeGame.computerAsGamePlayer.isGameVsComputer(false)
 
     playerVsPlayerButton.classList.remove(disableButtonClassName);
     playerVsComputerButton.classList.add(disableButtonClassName);
@@ -294,7 +286,7 @@ function onPlayerVsComputerButtonClick() {
         return;
     }
     ticTacToeGame.refreshGame();
-    ticTacToeGame.setPlayerVsComputerGameMode();
+    ticTacToeGame.computerAsGamePlayer.isGameVsComputer(true);
 
     playerVsComputerButton.classList.remove(disableButtonClassName);
     playerVsPlayerButton.classList.add(disableButtonClassName);
