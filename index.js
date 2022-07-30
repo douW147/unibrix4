@@ -1,16 +1,14 @@
 "use strict";
 
-class CellsField {
-    #field;
+class HtmlCellsField {
     #allHtmlCells;
     constructor(gameFieldCellsClassName) {
-        this.#field = ["", "", "", "", "", "", "", "", ""];
         this.#allHtmlCells = document.getElementsByClassName(
             gameFieldCellsClassName
         );
     }
 
-    fillSelectedCellWithSymbol(cellId, currentStepsSymbol) {
+    fillSelectedHtmlCellWithSymbol(cellId, currentStepsSymbol) {
         document.getElementById(`cell${cellId}`).innerHTML =
             currentStepsSymbol;
     }
@@ -20,6 +18,14 @@ class CellsField {
         for (let cellIndex = 0; cellIndex < this.#allHtmlCells.length; cellIndex++) {
             this.#allHtmlCells[cellIndex].innerHTML = "";
         }
+    }
+
+} 
+
+class CellsField {
+    #field;
+    constructor() {
+        this.#field = ["", "", "", "", "", "", "", "", ""];
     }
 
     refresh() {
@@ -149,25 +155,40 @@ class MessageHeading {
     constructor(headingIdName) {
         this.headingForMessage = document.getElementById(headingIdName);
     }
+    
     setMessageHeadingInnerHtml(message) {
         this.headingForMessage.innerHTML = message;
     }
 }
 
+class GameButton {
+    constructor(isAvailible) {
+        this._isPLayButtonAvailible = isAvailible;
+    }
+
+    get isButtonAvailible() {
+        return this._isPLayButtonAvailible;
+    }
+
+    set isButtonAvailible(isAvailible) {
+        this._isPLayButtonAvailible = isAvailible;
+    }
+}
+
 class TicTacToeGame {
     constructor(symbolOfO, symbolOfX, _messageHeading, gameFieldCellsClassName) {
-        this.gameField = new CellsField(gameFieldCellsClassName);
+        this.htmlGameField = new HtmlCellsField(gameFieldCellsClassName);
+        this.gameField = new CellsField();
         this.gameSymbols = new GameSymbols(symbolOfO, symbolOfX);
         this.computerAsGamePlayer = new ComputerAsGamePlayer();
         this.headingForMessage = new MessageHeading(_messageHeading);
         this.isGameStarts = false;
-        this.isPLayButtonAvailible = true;
     }
 
     refreshGame() {
         this.gameField.refresh();
         this.gameSymbols.currentStepsSymbol = this.gameSymbols.symbolOfX;
-        this.gameField.refreshAllHtmlGameFieldCells();
+        this.htmlGameField.refreshAllHtmlGameFieldCells();
         this.headingForMessage.setMessageHeadingInnerHtml("");
         if (!this.isGameStarts) {
             this.toggleIsGameStarts()
@@ -187,10 +208,6 @@ class TicTacToeGame {
         return "";
     }
 
-    setIsPLayButtonUnvailible() {
-        this.isPLayButtonAvailible = false;
-    }
-
     toggleIsGameStarts() {
         this.isGameStarts = !this.isGameStarts;
     }
@@ -207,11 +224,11 @@ class TicTacToeGame {
         );
     }
 
-    isPlayerVsPlayerButtonAvailible() {
+    isPlayerVsPlayerGameMode() {
         return this.isGameStarts && this.computerAsGamePlayer.isGameVsComputer;
     }
 
-    isPlayerVsComputerButtonAvailible() {
+    isPlayerVsComputerGameMode() {
         return this.isGameStarts && !this.computerAsGamePlayer.isGameVsComputer;
     }
 
@@ -224,7 +241,7 @@ class TicTacToeGame {
         const currentStepsSymbol = this.gameSymbols.currentStepsSymbol;
 
         this.gameField.setCurrentSymbolToSelectedFieldCell(currentStepsSymbol, clickedCellId);
-        this.gameField.fillSelectedCellWithSymbol(clickedCellId, currentStepsSymbol);
+        this.htmlGameField.fillSelectedHtmlCellWithSymbol(clickedCellId, currentStepsSymbol);
 
         const currentHeadingMessage = ticTacToeGame.getGameEndMessage();
         this.headingForMessage.setMessageHeadingInnerHtml(currentHeadingMessage);
@@ -240,6 +257,7 @@ const gameFieldCellsClassName = "field__cell";
 const playerVsPlayerButton = document.getElementById("playerVsPlayerButton");
 const playerVsComputerButton = document.getElementById("playerVsComputerButton");
 const ticTacToeGame = new TicTacToeGame("O", "X", headingForMessageIdName, gameFieldCellsClassName);
+const pLayButton = new GameButton(true);
 
 function onCellClick(event) {
     const clickedCellId = event.target.id.slice(-1);
@@ -256,10 +274,10 @@ function onCellClick(event) {
 }
 
 function onPlayClick(event) {
-    if (!ticTacToeGame.isPLayButtonAvailible) {
+    if (!pLayButton.isButtonAvailible) {
         return;
     }
-    ticTacToeGame.setIsPLayButtonUnvailible();
+    pLayButton.isButtonAvailible = false;
     ticTacToeGame.toggleIsGameStarts();
 
     event.target.classList.add(disableButtonClassName);
@@ -267,13 +285,13 @@ function onPlayClick(event) {
 }
 
 function onRefreshClick() {
-    if (!ticTacToeGame.isPLayButtonAvailible) {
+    if (!pLayButton.isButtonAvailible) {
         ticTacToeGame.refreshGame();
     }
 }
 
 function onPlayerVsPlayerButtonClick() {
-    if (!ticTacToeGame.isPlayerVsPlayerButtonAvailible()) {
+    if (!ticTacToeGame.isPlayerVsPlayerGameMode()) {
         return;
     }
     ticTacToeGame.refreshGame();
@@ -284,7 +302,7 @@ function onPlayerVsPlayerButtonClick() {
 }
 
 function onPlayerVsComputerButtonClick() {
-    if (!ticTacToeGame.isPlayerVsComputerButtonAvailible()) {
+    if (!ticTacToeGame.isPlayerVsComputerGameMode()) {
         return;
     }
     ticTacToeGame.refreshGame();
