@@ -115,9 +115,10 @@ class CellsField {
 }
 
 class GameSymbols {
+    #secondStepSymbol;
     constructor(_secondStepSymbol, _firstStepSymbol) {
         this.firstStepSymbol = _firstStepSymbol;
-        this.secondStepSymbol = _secondStepSymbol;
+        this.#secondStepSymbol = _secondStepSymbol;
         this._currentStepSymbol = this.firstStepSymbol;
     }
 
@@ -134,9 +135,9 @@ class GameSymbols {
     }
 
     togglecurrentStepSymbol() {
-        this._currentStepSymbol === this.secondStepSymbol
+        this._currentStepSymbol === this.#secondStepSymbol
             ? (this._currentStepSymbol = this.firstStepSymbol)
-            : (this._currentStepSymbol = this.secondStepSymbol);
+            : (this._currentStepSymbol = this.#secondStepSymbol);
     }
 }
 
