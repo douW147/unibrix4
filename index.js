@@ -8,13 +8,13 @@ class HtmlCellsField {
         );
     }
 
-    fillSelectedHtmlCellWithSymbol(cellId, currentStepsSymbol) {
+    setSymbolToSelctedHtmlCell(currentStepSymbol, cellId) {
         document.getElementById(`cell${cellId}`).innerHTML =
-            currentStepsSymbol;
+            currentStepSymbol;
     }
 
 
-    refreshAllHtmlGameFieldCells() {
+    refresh() {
         for (let cellIndex = 0; cellIndex < this.#allHtmlCells.length; cellIndex++) {
             this.#allHtmlCells[cellIndex].innerHTML = "";
         }
@@ -41,8 +41,8 @@ class CellsField {
         }
     }
 
-    setCurrentSymbolToSelectedFieldCell(currentStepsSymbol, selectedCellNumber) {
-        this.#field[selectedCellNumber] = currentStepsSymbol;
+    setSymbolToSelectedFieldCell(currentStepSymbol, selectedCellNumber) {
+        this.#field[selectedCellNumber] = currentStepSymbol;
     }
 
     isCellEmpty(cellNumber) {
@@ -116,28 +116,32 @@ class CellsField {
 }
 
 class GameSymbols {
-    constructor(_symbolOfO, _symbolOfX) {
-        this.symbolOfX = _symbolOfX;
-        this.symbolOfO = _symbolOfO;
-        this._currentStepsSymbol = this.symbolOfX;
+    constructor(_secondStepSymbol, _firstStepSymbol) {
+        this.firstStepSymbol = _firstStepSymbol;
+        this.secondStepSymbol = _secondStepSymbol;
+        this._currentStepSymbol = this.firstStepSymbol;
     }
 
-    get currentStepsSymbol() {
-        return this._currentStepsSymbol;
+    refresh() {
+        this.currentStepSymbol = this.firstStepSymbol;
     }
 
-    set currentStepsSymbol(stepsSymbol) {
-        this._currentStepsSymbol = stepsSymbol;
+    get currentStepSymbol() {
+        return this._currentStepSymbol;
     }
 
-    toggleCurrentStepsSymbol() {
-        this._currentStepsSymbol === this.symbolOfO
-            ? (this._currentStepsSymbol = this.symbolOfX)
-            : (this._currentStepsSymbol = this.symbolOfO);
+    set currentStepSymbol(stepsSymbol) {
+        this._currentStepSymbol = stepsSymbol;
+    }
+
+    togglecurrentStepSymbol() {
+        this._currentStepSymbol === this.secondStepSymbol
+            ? (this._currentStepSymbol = this.firstStepSymbol)
+            : (this._currentStepSymbol = this.secondStepSymbol);
     }
 }
 
-class ComputerAsGamePlayer {
+class GameMode {
     constructor() {
         this._isGameVsComputer = false;
     }
@@ -149,57 +153,54 @@ class ComputerAsGamePlayer {
     set isGameVsComputer(newIsGameVsComputerValue) {
         this._isGameVsComputer = newIsGameVsComputerValue;
     }
+
+    isPlayerVsPlayerGameMode() {
+        return this.isGameVsComputer;
+    }
+
+    isPlayerVsComputerGameMode() {
+        return !this.isGameVsComputer;
+    }
 }
 
 class MessageHeading {
     constructor(headingIdName) {
-        this.headingForMessage = document.getElementById(headingIdName);
+        this.htmlMessageHeading = document.getElementById(headingIdName);
     }
     
-    setMessageHeadingInnerHtml(message) {
-        this.headingForMessage.innerHTML = message;
-    }
-}
-
-class GameButton {
-    constructor(isAvailible) {
-        this._isPLayButtonAvailible = isAvailible;
+    setInnerHtml(message) {
+        this.htmlMessageHeading.innerHTML = message;
     }
 
-    get isButtonAvailible() {
-        return this._isPLayButtonAvailible;
-    }
-
-    set isButtonAvailible(isAvailible) {
-        this._isPLayButtonAvailible = isAvailible;
+    refresh() {
+        this.htmlMessageHeading.innerHTML = "";
     }
 }
 
 class TicTacToeGame {
-    constructor(symbolOfO, symbolOfX, _messageHeading, gameFieldCellsClassName) {
+    constructor(secondStepSymbol, firstStepSymbol, _messageHeadingIdName, gameFieldCellsClassName) {
         this.htmlGameField = new HtmlCellsField(gameFieldCellsClassName);
         this.gameField = new CellsField();
-        this.gameSymbols = new GameSymbols(symbolOfO, symbolOfX);
-        this.computerAsGamePlayer = new ComputerAsGamePlayer();
-        this.headingForMessage = new MessageHeading(_messageHeading);
+        this.gameSymbols = new GameSymbols(secondStepSymbol, firstStepSymbol);
+        this.gameMode = new GameMode();
+        this.htmlMessageHeading = new MessageHeading(_messageHeadingIdName);
         this.isGameStarts = false;
     }
 
     refreshGame() {
         this.gameField.refresh();
-        this.gameSymbols.currentStepsSymbol = this.gameSymbols.symbolOfX;
-        this.htmlGameField.refreshAllHtmlGameFieldCells();
-        this.headingForMessage.setMessageHeadingInnerHtml("");
+        this.gameSymbols.refresh();
+        this.htmlGameField.refresh();
+        this.htmlMessageHeading.refresh();
         if (!this.isGameStarts) {
             this.toggleIsGameStarts()
         }
     }
 
     getGameEndMessage() {
-        if (this.gameField.isWinCombination(
-            this.gameSymbols.currentStepsSymbol)) {
+        if (this.gameField.isWinCombination(this.gameSymbols.currentStepSymbol)) {
             this.toggleIsGameStarts();
-            return `${this.gameSymbols.currentStepsSymbol} wins`;
+            return `${this.gameSymbols.currentStepSymbol} wins`;
         }
         if (this.gameField.isDraw()) {
             this.toggleIsGameStarts();
@@ -212,57 +213,63 @@ class TicTacToeGame {
         this.isGameStarts = !this.isGameStarts;
     }
 
-    isPlayerCanStepToSelectedCell(clickedCellId) {
+    isPlayerCanStepToChosenCell(clickedCellId) {
         return this.gameField.isCellEmpty(clickedCellId) && this.isGameStarts;
     }
 
     isComputerCanStep() {
         return (
-            this.computerAsGamePlayer.isGameVsComputer 
+            this.gameMode.isGameVsComputer 
             && !this.gameField.isAllCellsTaken() 
             && this.isGameStarts
         );
     }
 
-    isPlayerVsPlayerGameMode() {
-        return this.isGameStarts && this.computerAsGamePlayer.isGameVsComputer;
-    }
+    makeStep(clickedCellId) {
+        const currentStepSymbol = this.gameSymbols.currentStepSymbol;
 
-    isPlayerVsComputerGameMode() {
-        return this.isGameStarts && !this.computerAsGamePlayer.isGameVsComputer;
-    }
+        this.gameField.setSymbolToSelectedFieldCell(currentStepSymbol, clickedCellId);
+        this.htmlGameField.setSymbolToSelctedHtmlCell(currentStepSymbol, clickedCellId);
 
+        const currentHeadingMessage = ticTacToeGame.getGameEndMessage();
+        this.htmlMessageHeading.setInnerHtml(currentHeadingMessage);
+
+        this.gameSymbols.togglecurrentStepSymbol();
+    }
+    
     makeComputerStep() {
         const cellIdForComputerStep = this.gameField.getRandomCellIdForComputerStep();
         this.makeStep(cellIdForComputerStep);
     }
+}
 
-    makeStep(clickedCellId) {
-        const currentStepsSymbol = this.gameSymbols.currentStepsSymbol;
+class GameInitializationButton {
+    constructor(isAvailible) {
+        this._isgameInitializationButtonAvailible = isAvailible;
+    }
 
-        this.gameField.setCurrentSymbolToSelectedFieldCell(currentStepsSymbol, clickedCellId);
-        this.htmlGameField.fillSelectedHtmlCellWithSymbol(clickedCellId, currentStepsSymbol);
+    get isClicked() {
+        return this._isgameInitializationButtonAvailible;
+    }
 
-        const currentHeadingMessage = ticTacToeGame.getGameEndMessage();
-        this.headingForMessage.setMessageHeadingInnerHtml(currentHeadingMessage);
-
-        this.gameSymbols.toggleCurrentStepsSymbol();
+    set isClicked(isAvailible) {
+        this._isgameInitializationButtonAvailible = isAvailible;
     }
 }
 
-const headingForMessageIdName = "messageHeading";
+const headingMessageIdName = "messageHeading";
 const disableButtonClassName = "controll-buttons__controll-button_disabled";
 const refreshButton = document.getElementById("refreshButton");
 const gameFieldCellsClassName = "field__cell";
 const playerVsPlayerButton = document.getElementById("playerVsPlayerButton");
 const playerVsComputerButton = document.getElementById("playerVsComputerButton");
-const ticTacToeGame = new TicTacToeGame("O", "X", headingForMessageIdName, gameFieldCellsClassName);
-const pLayButton = new GameButton(true);
+const ticTacToeGame = new TicTacToeGame("O", "X", headingMessageIdName, gameFieldCellsClassName);
+const gameInitializationButton = new GameInitializationButton(true);
 
 function onCellClick(event) {
     const clickedCellId = event.target.id.slice(-1);
 
-    if (!ticTacToeGame.isPlayerCanStepToSelectedCell(clickedCellId)) {
+    if (!ticTacToeGame.isPlayerCanStepToChosenCell(clickedCellId)) {
         return;
     }
     ticTacToeGame.makeStep(clickedCellId);
@@ -273,11 +280,11 @@ function onCellClick(event) {
     ticTacToeGame.makeComputerStep();
 }
 
-function onPlayClick(event) {
-    if (!pLayButton.isButtonAvailible) {
+function onGameInitializationButtonClick(event) {
+    if (!gameInitializationButton.isClicked) {
         return;
     }
-    pLayButton.isButtonAvailible = false;
+    gameInitializationButton.isClicked = false;
     ticTacToeGame.toggleIsGameStarts();
 
     event.target.classList.add(disableButtonClassName);
@@ -285,28 +292,28 @@ function onPlayClick(event) {
 }
 
 function onRefreshClick() {
-    if (!pLayButton.isButtonAvailible) {
+    if (!gameInitializationButton.isClicked) {
         ticTacToeGame.refreshGame();
     }
 }
 
 function onPlayerVsPlayerButtonClick() {
-    if (!ticTacToeGame.isPlayerVsPlayerGameMode()) {
+    if (!ticTacToeGame.gameMode.isPlayerVsPlayerGameMode() || gameInitializationButton.isClicked) {
         return;
     }
     ticTacToeGame.refreshGame();
-    ticTacToeGame.computerAsGamePlayer.isGameVsComputer = false;
+    ticTacToeGame.gameMode.isGameVsComputer = false;
 
     playerVsPlayerButton.classList.remove(disableButtonClassName);
     playerVsComputerButton.classList.add(disableButtonClassName);
 }
 
 function onPlayerVsComputerButtonClick() {
-    if (!ticTacToeGame.isPlayerVsComputerGameMode()) {
+    if (!ticTacToeGame.gameMode.isPlayerVsComputerGameMode() || gameInitializationButton.isClicked) {
         return;
     }
     ticTacToeGame.refreshGame();
-    ticTacToeGame.computerAsGamePlayer.isGameVsComputer = true;
+    ticTacToeGame.gameMode.isGameVsComputer = true;
 
     playerVsComputerButton.classList.remove(disableButtonClassName);
     playerVsPlayerButton.classList.add(disableButtonClassName);
