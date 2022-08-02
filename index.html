@@ -22,25 +22,20 @@
         <button onClick="onPlayerVsComputerButtonClick()" id="playerVsComputerButton" value="true" class="controll-buttons__controll-button controll-buttons__controll-button_sm controll-buttons__controll-button_disabled">
             1 vs computer
         </button>
+        <select id="fieldSizeSelect" onchange="onFieldSizeSelectChange(event)">
+            <option value="3">3x3</option>
+            <option value="4">4x4</option>
+            <option value="5">5x5</option>
+            <option value="6">6x6</option>
+            <option value="7">7x7</option>
+            <option value="8">8x8</option>
+            <option value="9">9x9</option>
+            <option value="10">10x10</option>
+        </select>
     </div>
     <h1 class="message" id="messageHeading"></h1>
     <div class="container">
-        <div class="field">
-            <div class="field__row">
-                <div onclick="onCellClick(event)" class="field__cell" id="cell0"></div>
-                <div onclick="onCellClick(event)" class="field__cell" id="cell1"></div>
-                <div onclick="onCellClick(event)" class="field__cell" id="cell2"></div>
-            </div>
-            <div class="field__row">
-                <div onclick="onCellClick(event)" class="field__cell" id="cell3"></div>
-                <div onclick="onCellClick(event)" class="field__cell" id="cell4"></div>
-                <div onclick="onCellClick(event)" class="field__cell" id="cell5"></div>
-            </div>
-            <div class="field__row">
-                <div onclick="onCellClick(event)" class="field__cell" id="cell6"></div>
-                <div onclick="onCellClick(event)" class="field__cell" id="cell7"></div>
-                <div onclick="onCellClick(event)" class="field__cell" id="cell8"></div>
-            </div>
+        <div id="field" class="field">
         </div>
     </div>
     <script src="./index.js"></script>

@@ -1,11 +1,31 @@
 "use strict";
 
 class HtmlCellsField {
+    #_field;
+    #_fieldIdName;
+    #_rowIdAndClassName;
+    #_rowTagName;
+    #_cellTagName;
+    #_cellIdName;
+    #_cellClassName
     #allHtmlCells;
-    constructor(gameFieldCellsClassName) {
-        this.#allHtmlCells = document.getElementsByClassName(
-            gameFieldCellsClassName
-        );
+    constructor(
+        fieldSize,
+        fieldIdName,
+        fieldRowIdAndClassName,
+        fieldRowTagName,
+        fieldCellTagName,
+        cellClassName, 
+        cellIdName,
+        ) {
+        this.#_rowIdAndClassName = fieldRowIdAndClassName;
+        this.#_rowTagName = fieldRowTagName;
+        this.#_cellTagName = fieldCellTagName;
+        this.#_cellIdName = cellIdName;
+        this.#_cellClassName = cellClassName;
+        this.#_fieldIdName = fieldIdName;
+        this.#_field = this.generateField(fieldSize);
+        this.#allHtmlCells = document.getElementsByClassName(this.#_cellClassName);
     }
 
     refresh() {
@@ -18,13 +38,46 @@ class HtmlCellsField {
         document.getElementById(`cell${cellId}`).innerHTML =
             currentStepSymbol;
     }
+
+    generateField(fieldSize) {
+        let currentCellId = 0;
+        const field = document.getElementById(this.#_fieldIdName);
+        field.innerHTML = "";
+        for (let rowIndex = 0; rowIndex < fieldSize; rowIndex++) {
+            const row = this.generateRow();
+            for (let columnIndex = 0; columnIndex < fieldSize; columnIndex++) {
+                const cell = this.generateCell(currentCellId);
+                currentCellId++;
+                row.appendChild(cell);
+            }
+            field.appendChild(row);
+        }
+    }
+
+    generateCell(cellId) {
+        const cell = document.createElement(this.#_cellTagName);
+        cell.setAttribute("id", `${this.#_cellIdName}${cellId}`);
+        cell.classList.add(this.#_cellClassName);
+        cell.addEventListener('click', onCellClick);
+        return cell;
+    }
+
+    generateRow() {
+        const row = document.createElement(this.#_rowTagName);
+        row.setAttribute("id", this.#_rowIdAndClassName);
+        row.classList.add(this.#_rowIdAndClassName);
+        return row;
+    }
 } 
 
 class CellsField {
     #field;
     #winCombinations;
-    constructor() {
-        this.#field = ["", "", "", "", "", "", "", "", ""];
+    #_fieldSize;
+    constructor(fieldSize) {
+        this.#field;
+        this.#_fieldSize = fieldSize;
+        this.generateField(fieldSize);
         this.#winCombinations = [
             [0, 1, 2], 
             [3, 4, 5],
@@ -38,16 +91,21 @@ class CellsField {
     }
 
     refresh() {
-        this.#field = ["", "", "", "", "", "", "", "", ""];
+        this.#field.fill("");
     }
 
     getRandomCellIdForComputerStep() {
         while (true) {
-            const randomCellId = Math.floor(Math.random() * 9);
+            const randomCellId = Math.floor(Math.random() * this.#field.length);
             if (this.isCellEmpty(randomCellId)) {
                 return randomCellId;
             }
         }
+    }
+
+    generateField(fieldSize) {
+        const field = new Array(fieldSize * fieldSize).fill("");
+        this.#field = field;
     }
 
     setSymbolToSelectedFieldCell(currentStepSymbol, selectedCellNumber) {
@@ -154,15 +212,32 @@ class MessageHeading {
 }
 
 class TicTacToeGame {
-    #htmlGameField;
-    #gameField;
     #gameSymbols;
     #gameMode;
     #htmlMessageHeading;
     #isGameStarts;
-    constructor(firstStepSymbol, secondStepSymbol, messageHeadingIdName, gameFieldCellsClassName) {
-        this.#htmlGameField = new HtmlCellsField(gameFieldCellsClassName);
-        this.#gameField = new CellsField();
+    constructor(
+        firstStepSymbol, 
+        secondStepSymbol, 
+        messageHeadingIdName, 
+        fieldSize,
+        fieldIdName,
+        fieldRowIdAndClassName,
+        fieldRowTagName,
+        fieldCellTagName,
+        fieldCellsClassName, 
+        fieldCellIdName,
+        ) {
+        this.gameField = new CellsField(fieldSize);
+        this.htmlGameField = new HtmlCellsField(
+            fieldSize,
+            fieldIdName,
+            fieldRowIdAndClassName,
+            fieldRowTagName,
+            fieldCellTagName,
+            fieldCellsClassName, 
+            fieldCellIdName
+        );
         this.#gameSymbols = new GameSymbols(firstStepSymbol, secondStepSymbol);
         this.#gameMode = new GameMode();
         this.#htmlMessageHeading = new MessageHeading(messageHeadingIdName);
@@ -170,9 +245,9 @@ class TicTacToeGame {
     }
 
     refreshGame() {
-        this.#gameField.refresh();
+        this.gameField.refresh();
+        this.htmlGameField.refresh();
         this.#gameSymbols.refresh();
-        this.#htmlGameField.refresh();
         this.#htmlMessageHeading.refresh();
         if (!this.#isGameStarts) {
             this.toggleIsGameStarts()
@@ -184,11 +259,11 @@ class TicTacToeGame {
     }
 
     getGameEndMessage() {
-        if (this.#gameField.isWinCombination(this.#gameSymbols.currentStepSymbol)) {
+        if (this.gameField.isWinCombination(this.#gameSymbols.currentStepSymbol)) {
             this.toggleIsGameStarts();
             return `${this.#gameSymbols.currentStepSymbol} wins`;
         }
-        if (this.#gameField.isDraw()) {
+        if (this.gameField.isDraw()) {
             this.toggleIsGameStarts();
             return "draw";
         }
@@ -200,13 +275,13 @@ class TicTacToeGame {
     }
 
     isPlayerCanStepToChosenCell(clickedCellId) {
-        return this.#gameField.isCellEmpty(clickedCellId) && this.#isGameStarts;
+        return this.gameField.isCellEmpty(clickedCellId) && this.#isGameStarts;
     }
 
     isComputerCanStep() {
         return (
             this.#gameMode.isGameVsComputer 
-            && !this.#gameField.isAllCellsTaken() 
+            && !this.gameField.isAllCellsTaken() 
             && this.#isGameStarts
         );
     }
@@ -214,8 +289,8 @@ class TicTacToeGame {
     makeStep(clickedCellId) {
         const currentStepSymbol = this.#gameSymbols.currentStepSymbol;
 
-        this.#gameField.setSymbolToSelectedFieldCell(currentStepSymbol, clickedCellId);
-        this.#htmlGameField.setSymbolToSelctedHtmlCell(currentStepSymbol, clickedCellId);
+        this.gameField.setSymbolToSelectedFieldCell(currentStepSymbol, clickedCellId);
+        this.htmlGameField.setSymbolToSelctedHtmlCell(currentStepSymbol, clickedCellId);
 
         const currentHeadingMessage = ticTacToeGame.getGameEndMessage();
         this.#htmlMessageHeading.setInnerHtml(currentHeadingMessage);
@@ -224,7 +299,7 @@ class TicTacToeGame {
     }
     
     makeComputerStep() {
-        const cellIdForComputerStep = this.#gameField.getRandomCellIdForComputerStep();
+        const cellIdForComputerStep = this.gameField.getRandomCellIdForComputerStep();
         this.makeStep(cellIdForComputerStep);
     }
 }
@@ -244,28 +319,49 @@ class GameInitializationButton {
     }
 }
 
+const fieldIdName = "field";
+const fieldRowTagName = "div";
+const fieldCellTagName = "div";
+const fieldCellsClassName = "field__cell";
+const fieldCellIdName = "cell";
+const fieldRowIdAndClassName = "field__row";
+const firstStepSymbol = "X";
+const secondStepSymbol = "O";
+const initialFieldSize = 3;
+const allHtmlCells = document.getElementsByClassName(fieldCellsClassName);
 const headingMessageIdName = "messageHeading";
 const disableButtonClassName = "controll-buttons__controll-button_disabled";
 const refreshButton = document.getElementById("refreshButton");
-const gameFieldCellsClassName = "field__cell";
 const playerVsPlayerButton = document.getElementById("playerVsPlayerButton");
 const playerVsComputerButton = document.getElementById("playerVsComputerButton");
-const firstStepSymbol = "X";
-const secondStepSymbol = "O";
-const ticTacToeGame = new TicTacToeGame(firstStepSymbol, secondStepSymbol, headingMessageIdName, gameFieldCellsClassName);
+const fieldSizeSelect = document.getElementById("fieldSizeSelect");
+const ticTacToeGame = new TicTacToeGame(
+    firstStepSymbol, 
+    secondStepSymbol, 
+    headingMessageIdName, 
+    initialFieldSize,
+    fieldIdName,
+    fieldRowIdAndClassName,
+    fieldRowTagName,
+    fieldCellTagName,
+    fieldCellsClassName, 
+    fieldCellIdName,
+    );
 const gameInitializationButton = new GameInitializationButton(true);
 
 function onCellClick(event) {
-    const clickedCellId = event.target.id.slice(-1);
+    const clickedCellId = getCellIdFromIdName(event.target.id);
 
     if (!ticTacToeGame.isPlayerCanStepToChosenCell(clickedCellId)) {
         return;
     }
+
     ticTacToeGame.makeStep(clickedCellId);
 
     if (!ticTacToeGame.isComputerCanStep()) {
         return;
     }
+
     ticTacToeGame.makeComputerStep();
 }
 
@@ -306,4 +402,16 @@ function onPlayerVsComputerButtonClick() {
 
     playerVsComputerButton.classList.remove(disableButtonClassName);
     playerVsPlayerButton.classList.add(disableButtonClassName);
+}
+
+function onFieldSizeSelectChange(event) {
+    const newFieldSize = event.target.value;
+    ticTacToeGame.gameField.generateField(newFieldSize); 
+    ticTacToeGame.htmlGameField.generateField(newFieldSize);  
+}
+
+function getCellIdFromIdName(cellId) {
+    let clickedCellId = cellId.slice(-2);
+    clickedCellId = isNaN(parseInt(clickedCellId)) ? clickedCellId.slice(-1): clickedCellId;
+    return clickedCellId;
 }

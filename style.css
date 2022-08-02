@@ -33,9 +33,9 @@
 }
 
 .field__cell {
-    font-size: 13rem;
-    width: 180px;
-    height: 180px;
+    font-size: 3rem;
+    min-width: 50px;
+    min-height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -66,25 +66,30 @@
 
 .message {
     text-align: center;
-    font-size: 4rem;
-}
-
-@media only screen and (max-width: 768px) { 
-
-    .field__cell {
-        width: 150px;
-        height: 150px;
-        font-size: 9rem;
-    }
-
+    font-size: 2.5rem;
+    margin-bottom: 3%;
 }
 
 @media only screen and (max-width: 576px) { 
 
+    .controll-buttons {
+        margin-bottom: 10%;
+    }
+
     .field__cell {
-        width: 100px;
-        height: 100px;
-        font-size: 5rem;
+        font-size: 1.7rem;
+        min-width: 30px;
+        min-height: 30px;
+    }
+
+    .field__row {
+        border-bottom: 3px solid var(--border);
+        border-radius: 5px;
+    }
+    
+    .field__row > .field__cell{
+        border-right: 3px solid var(--border);
+        border-radius: 5px;
     }
 
     .controll-buttons__controll-button {
@@ -93,4 +98,13 @@
         width: 50%;
     }
 
+}
+
+@media only screen and (max-width: 576px) { 
+
+    .field__cell {
+        font-size: 1.2rem;
+        min-width: 28px;
+        min-height: 28px;
+    }
 }
