@@ -8,17 +8,16 @@ class HtmlCellsField {
         );
     }
 
-    setSymbolToSelctedHtmlCell(currentStepSymbol, cellId) {
-        document.getElementById(`cell${cellId}`).innerHTML =
-            currentStepSymbol;
-    }
-
     refresh() {
         for (let cellIndex = 0; cellIndex < this.#allHtmlCells.length; cellIndex++) {
             this.#allHtmlCells[cellIndex].innerHTML = "";
         }
     }
 
+    setSymbolToSelctedHtmlCell(currentStepSymbol, cellId) {
+        document.getElementById(`cell${cellId}`).innerHTML =
+            currentStepSymbol;
+    }
 } 
 
 class CellsField {
