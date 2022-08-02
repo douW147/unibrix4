@@ -72,11 +72,11 @@ class CellsField {
     }
 
     isWinCombination(currentSymbol) {
-        const isWin = this.#winCombinations.some((currentWinCombinationCells) => {
-            if (this.#field[currentWinCombinationCells[0]] === currentSymbol
-                && this.#field[currentWinCombinationCells[1]] === currentSymbol
-                && this.#field[currentWinCombinationCells[2]] === currentSymbol) {
-                return true
+        const isWin = this.#winCombinations.some((winningCellsCombination) => {
+            if (this.#field[winningCellsCombination[0]] === currentSymbol
+                && this.#field[winningCellsCombination[1]] === currentSymbol
+                && this.#field[winningCellsCombination[2]] === currentSymbol) {
+                return true;
             }
         });
         return isWin;
