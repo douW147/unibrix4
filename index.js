@@ -23,8 +23,19 @@ class HtmlCellsField {
 
 class CellsField {
     #field;
+    #winCombinations;
     constructor() {
         this.#field = ["", "", "", "", "", "", "", "", ""];
+        this.#winCombinations = [
+            [0, 1, 2], 
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5 ,8],
+            [0, 4 ,8],
+            [2, 4, 6]
+        ];
     }
 
     refresh() {
@@ -61,56 +72,14 @@ class CellsField {
     }
 
     isWinCombination(currentSymbol) {
-        if (
-            this.#field[0] === currentSymbol 
-            && this.#field[1] === currentSymbol 
-            && this.#field[2] === currentSymbol
-        ) {
-            return true;
-        } else if (
-            this.#field[3] === currentSymbol 
-            && this.#field[4] === currentSymbol 
-            && this.#field[5] === currentSymbol
-        ) {
-            return true;
-        } else if (
-            this.#field[6] === currentSymbol 
-            && this.#field[7] === currentSymbol 
-            && this.#field[8] === currentSymbol
-        ) {
-            return true;
-        } else if (
-            this.#field[0] === currentSymbol 
-            && this.#field[3] === currentSymbol 
-            && this.#field[6] === currentSymbol
-        ) {
-            return true;
-        } else if (
-            this.#field[1] === currentSymbol 
-            && this.#field[4] === currentSymbol 
-            && this.#field[7] === currentSymbol
-        ) {
-            return true;
-        } else if (
-            this.#field[2] === currentSymbol 
-            && this.#field[5] === currentSymbol 
-            && this.#field[8] === currentSymbol
-        ) {
-            return true;
-        } else if (
-            this.#field[0] === currentSymbol 
-            && this.#field[4] === currentSymbol 
-            && this.#field[8] === currentSymbol
-        ) {
-            return true;
-        } else if (
-            this.#field[2] === currentSymbol 
-            && this.#field[4] === currentSymbol 
-            && this.#field[6] === currentSymbol
-        ) {
-            return true;
-        }
-        return false;
+        const isWin = this.#winCombinations.some((currentWinCombinationCells) => {
+            if (this.#field[currentWinCombinationCells[0]] === currentSymbol
+                && this.#field[currentWinCombinationCells[1]] === currentSymbol
+                && this.#field[currentWinCombinationCells[2]] === currentSymbol) {
+                return true
+            }
+        });
+        return isWin;
     }
 }
 
@@ -339,7 +308,3 @@ function onPlayerVsComputerButtonClick() {
     playerVsComputerButton.classList.remove(disableButtonClassName);
     playerVsPlayerButton.classList.add(disableButtonClassName);
 }
-
-
-
-
