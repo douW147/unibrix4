@@ -115,94 +115,112 @@ class CellsField {
 }
 
 class GameSymbols {
-    #secondStepSymbol;
-    constructor(_secondStepSymbol, _firstStepSymbol) {
-        this.firstStepSymbol = _firstStepSymbol;
-        this.#secondStepSymbol = _secondStepSymbol;
-        this._currentStepSymbol = this.firstStepSymbol;
+    #_secondStepSymbol;
+    #_currentStepSymbol;
+    #_firstStepSymbol;
+    constructor(firstStepSymbol, secondStepSymbol) {
+        this.#_firstStepSymbol = firstStepSymbol;
+        this.#_secondStepSymbol = secondStepSymbol;
+        this.#_currentStepSymbol = this.firstStepSymbol;
     }
 
     refresh() {
-        this.currentStepSymbol = this.firstStepSymbol;
+        this.#_currentStepSymbol = this.#_firstStepSymbol;
+    }
+
+    get firstStepSymbol () {
+        return this.#_firstStepSymbol;
     }
 
     get currentStepSymbol() {
-        return this._currentStepSymbol;
+        return this.#_currentStepSymbol;
     }
 
     set currentStepSymbol(stepsSymbol) {
-        this._currentStepSymbol = stepsSymbol;
+        this.#_currentStepSymbol = stepsSymbol;
     }
 
     togglecurrentStepSymbol() {
-        this._currentStepSymbol === this.#secondStepSymbol
-            ? (this._currentStepSymbol = this.firstStepSymbol)
-            : (this._currentStepSymbol = this.#secondStepSymbol);
+        this.#_currentStepSymbol === this.#_secondStepSymbol
+            ? (this.#_currentStepSymbol = this.#_firstStepSymbol)
+            : (this.#_currentStepSymbol = this.#_secondStepSymbol);
     }
 }
 
 class GameMode {
+    #isGameVsComputer;
     constructor() {
-        this._isGameVsComputer = false;
+        this.#isGameVsComputer = false;
     }
 
     get isGameVsComputer() {
-        return this._isGameVsComputer;
+        return this.#isGameVsComputer;
     }
 
     set isGameVsComputer(newIsGameVsComputerValue) {
-        this._isGameVsComputer = newIsGameVsComputerValue;
+        this.#isGameVsComputer = newIsGameVsComputerValue;
     }
 
     isPlayerVsPlayerGameMode() {
-        return this.isGameVsComputer;
+        return this.#isGameVsComputer;
     }
 
     isPlayerVsComputerGameMode() {
-        return !this.isGameVsComputer;
+        return !this.#isGameVsComputer;
     }
 }
 
 class MessageHeading {
+    #_htmlMessageHeading;
     constructor(headingIdName) {
-        this.htmlMessageHeading = document.getElementById(headingIdName);
+        this.#_htmlMessageHeading = document.getElementById(headingIdName);
     }
     
     setInnerHtml(message) {
-        this.htmlMessageHeading.innerHTML = message;
+        this.#_htmlMessageHeading.innerHTML = message;
     }
 
     refresh() {
-        this.htmlMessageHeading.innerHTML = "";
+        this.#_htmlMessageHeading.innerHTML = "";
     }
 }
 
 class TicTacToeGame {
-    constructor(secondStepSymbol, firstStepSymbol, _messageHeadingIdName, gameFieldCellsClassName) {
-        this.htmlGameField = new HtmlCellsField(gameFieldCellsClassName);
-        this.gameField = new CellsField();
-        this.gameSymbols = new GameSymbols(secondStepSymbol, firstStepSymbol);
-        this.gameMode = new GameMode();
-        this.htmlMessageHeading = new MessageHeading(_messageHeadingIdName);
-        this.isGameStarts = false;
+    #htmlGameField;
+    #gameField;
+    #gameSymbols;
+    #gameMode;
+    #htmlMessageHeading;
+    #isGameStarts;
+    constructor(firstStepSymbol, secondStepSymbol, messageHeadingIdName, gameFieldCellsClassName) {
+        this.#htmlGameField = new HtmlCellsField(gameFieldCellsClassName);
+        this.#gameField = new CellsField();
+        this.#gameSymbols = new GameSymbols(firstStepSymbol, secondStepSymbol);
+        this.#gameMode = new GameMode();
+        this.#htmlMessageHeading = new MessageHeading(messageHeadingIdName);
+        this.#isGameStarts = false;
     }
 
     refreshGame() {
-        this.gameField.refresh();
-        this.gameSymbols.refresh();
-        this.htmlGameField.refresh();
-        this.htmlMessageHeading.refresh();
-        if (!this.isGameStarts) {
+        this.#gameField.refresh();
+        this.#gameSymbols.refresh();
+        this.#htmlGameField.refresh();
+        this.#htmlMessageHeading.refresh();
+        if (!this.#isGameStarts) {
             this.toggleIsGameStarts()
         }
     }
 
+    get gameMode() {
+        return this.#gameMode;
+    }
+
     getGameEndMessage() {
-        if (this.gameField.isWinCombination(this.gameSymbols.currentStepSymbol)) {
+        if (this.#gameField.isWinCombination(this.#gameSymbols.currentStepSymbol)) {
             this.toggleIsGameStarts();
-            return `${this.gameSymbols.currentStepSymbol} wins`;
+            return `${this.#gameSymbols.currentStepSymbol} wins`;
         }
-        if (this.gameField.isDraw()) {
+        if (this.#gameField.isDraw()) {
             this.toggleIsGameStarts();
             return "draw";
         }
@@ -210,50 +228,51 @@ class TicTacToeGame {
     }
 
     toggleIsGameStarts() {
-        this.isGameStarts = !this.isGameStarts;
+        this.#isGameStarts = !this.#isGameStarts;
     }
 
     isPlayerCanStepToChosenCell(clickedCellId) {
-        return this.gameField.isCellEmpty(clickedCellId) && this.isGameStarts;
+        return this.#gameField.isCellEmpty(clickedCellId) && this.#isGameStarts;
     }
 
     isComputerCanStep() {
         return (
-            this.gameMode.isGameVsComputer 
-            && !this.gameField.isAllCellsTaken() 
-            && this.isGameStarts
+            this.#gameMode.isGameVsComputer 
+            && !this.#gameField.isAllCellsTaken() 
+            && this.#isGameStarts
         );
     }
 
     makeStep(clickedCellId) {
-        const currentStepSymbol = this.gameSymbols.currentStepSymbol;
+        const currentStepSymbol = this.#gameSymbols.currentStepSymbol;
 
-        this.gameField.setSymbolToSelectedFieldCell(currentStepSymbol, clickedCellId);
-        this.htmlGameField.setSymbolToSelctedHtmlCell(currentStepSymbol, clickedCellId);
+        this.#gameField.setSymbolToSelectedFieldCell(currentStepSymbol, clickedCellId);
+        this.#htmlGameField.setSymbolToSelctedHtmlCell(currentStepSymbol, clickedCellId);
 
         const currentHeadingMessage = ticTacToeGame.getGameEndMessage();
-        this.htmlMessageHeading.setInnerHtml(currentHeadingMessage);
+        this.#htmlMessageHeading.setInnerHtml(currentHeadingMessage);
 
-        this.gameSymbols.togglecurrentStepSymbol();
+        this.#gameSymbols.togglecurrentStepSymbol();
     }
     
     makeComputerStep() {
-        const cellIdForComputerStep = this.gameField.getRandomCellIdForComputerStep();
+        const cellIdForComputerStep = this.#gameField.getRandomCellIdForComputerStep();
         this.makeStep(cellIdForComputerStep);
     }
 }
 
 class GameInitializationButton {
+    #_isAvailible;
     constructor(isAvailible) {
-        this._isgameInitializationButtonAvailible = isAvailible;
+        this.#_isAvailible = isAvailible;
     }
 
     get isClicked() {
-        return this._isgameInitializationButtonAvailible;
+        return this.#_isAvailible;
     }
 
     set isClicked(isAvailible) {
-        this._isgameInitializationButtonAvailible = isAvailible;
+        this.#_isAvailible = isAvailible;
     }
 }
 
@@ -263,7 +282,9 @@ const refreshButton = document.getElementById("refreshButton");
 const gameFieldCellsClassName = "field__cell";
 const playerVsPlayerButton = document.getElementById("playerVsPlayerButton");
 const playerVsComputerButton = document.getElementById("playerVsComputerButton");
-const ticTacToeGame = new TicTacToeGame("O", "X", headingMessageIdName, gameFieldCellsClassName);
+const firstStepSymbol = "X";
+const secondStepSymbol = "O";
+const ticTacToeGame = new TicTacToeGame(firstStepSymbol, secondStepSymbol, headingMessageIdName, gameFieldCellsClassName);
 const gameInitializationButton = new GameInitializationButton(true);
 
 function onCellClick(event) {
@@ -318,4 +339,7 @@ function onPlayerVsComputerButtonClick() {
     playerVsComputerButton.classList.remove(disableButtonClassName);
     playerVsPlayerButton.classList.add(disableButtonClassName);
 }
+
+
+
 
