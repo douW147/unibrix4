@@ -39,7 +39,7 @@ class HtmlCellsField {
         this.#_cellClassName = cellClassName;
         this.#_fieldIdName = fieldIdName;
         this.#_field = this.generateField(fieldSize);
-        this.#htmlMessageHeading = document.getElementById(messageHeadingIdName);
+        this.#htmlMessageHeading = window.document.getElementById(messageHeadingIdName);
         this.#allHtmlCells = window.document.getElementsByClassName(this.#_cellClassName);
     }
 
@@ -70,7 +70,7 @@ class HtmlCellsField {
     }
 
     setSymbolToSelctedHtmlCell(currentStepSymbol, cellId) {
-        const selectedCell = document.getElementById(`cell${cellId}`);
+        const selectedCell = window.document.getElementById(`cell${cellId}`);
         selectedCell.innerHTML = currentStepSymbol;
 
         if (currentStepSymbol === this.#firstStepSymbol) {
@@ -82,7 +82,7 @@ class HtmlCellsField {
 
     generateField(fieldSize) {
         let currentCellId = 0;
-        const field = document.getElementById(this.#_fieldIdName);
+        const field = window.document.getElementById(this.#_fieldIdName);
         field.innerHTML = "";
 
         for (let rowIndex = 0; rowIndex < fieldSize; rowIndex++) {
@@ -99,7 +99,7 @@ class HtmlCellsField {
     }
 
     generateCell(cellId) {
-        const cell = document.createElement(this.#_cellTagName);
+        const cell = window.document.createElement(this.#_cellTagName);
 
         cell.setAttribute("id", `${this.#_cellIdName}${cellId}`);
         cell.classList.add(this.#_cellClassName);
@@ -109,7 +109,7 @@ class HtmlCellsField {
     }
 
     generateRow() {
-        const row = document.createElement(this.#_rowTagName);
+        const row = window.document.createElement(this.#_rowTagName);
 
         row.setAttribute("id", this.#_rowIdAndClassName);
         row.classList.add(this.#_rowIdAndClassName);
@@ -415,13 +415,13 @@ const secondStepSymbol = "O";
 const firstStepSymbolClassName = "controll-buttons__controll-button_color-blue";
 const secondStepSymbolClassName = "controll-buttons__controll-button_color-red";
 const initialFieldSize = 3;
-const allHtmlCells = document.getElementsByClassName(fieldCellsClassName);
+const allHtmlCells = window.document.getElementsByClassName(fieldCellsClassName);
 const headingMessageIdName = "messageHeading";
 const disableButtonClassName = "controll-buttons__controll-button_disabled";
-const refreshButton = document.getElementById("refreshButton");
-const playerVsPlayerButton = document.getElementById("playerVsPlayerButton");
-const playerVsComputerButton = document.getElementById("playerVsComputerButton");
-const fieldSizeSelect = document.getElementById("fieldSizeSelect");
+const refreshButton = window.document.getElementById("refreshButton");
+const playerVsPlayerButton = window.document.getElementById("playerVsPlayerButton");
+const playerVsComputerButton = window.document.getElementById("playerVsComputerButton");
+const fieldSizeSelect = window.document.getElementById("fieldSizeSelect");
 const ticTacToeGame = new TicTacToeGame(
     firstStepSymbol,
     firstStepSymbolClassName,
