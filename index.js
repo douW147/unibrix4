@@ -35,8 +35,8 @@ class HtmlCellsField {
     }
 
     setSymbolToSelctedHtmlCell(currentStepSymbol, cellId) {
-        document.getElementById(`cell${cellId}`).innerHTML =
-            currentStepSymbol;
+        const selectedCell = document.getElementById(`cell${cellId}`);
+        selectedCell.innerHTML = currentStepSymbol;
     }
 
     generateField(fieldSize) {
@@ -76,9 +76,22 @@ class CellsField {
     #_fieldSize;
     constructor(fieldSize) {
         this.#field;
-        this.#_fieldSize = fieldSize;
-        this.#winCombinations = this.generateWinCombinations(fieldSize);
+        this.#_fieldSize = parseInt(fieldSize);
         this.generateField(fieldSize);
+        this.#winCombinations = [
+            [[0, 0], [-1, 0], [1, 0]], 
+            [[0, 0], [1, 0], [2, 0]],
+            [[0, 0], [-1, 0], [-2, 0]],
+            [[0, 0], [0, -1], [0, 1]],
+            [[0, 0], [0, -2], [0, -1]],
+            [[0, 0], [0, 1], [0, 2]],
+            [[0, 0], [-1, -1], [1, 1]],
+            [[0, 0], [-1, 1], [1, -1]],
+            [[0, 0], [-1, 1], [-2, 2]],
+            [[0, 0], [1, 1], [2, 2]],
+            [[0, 0], [1, -1], [2, -2]],
+            [[0, 0], [-1, -1], [-2, -2]]
+        ];
     }
 
     refresh() {
@@ -96,27 +109,18 @@ class CellsField {
 
     generateField(fieldSize) {
         this.#field = new Array(fieldSize * fieldSize).fill("");
-        this.#_fieldSize = fieldSize;
-        this.#winCombinations = this.generateWinCombinations(fieldSize);
+        this.#_fieldSize = parseInt(fieldSize);
     }
 
-    generateWinCombinations(fieldSize) {
-        fieldSize = parseInt(fieldSize);
-        const winCombinations = [
-            [0, -fieldSize, fieldSize], 
-            [0, fieldSize, fieldSize * 2],
-            [0, -fieldSize, fieldSize * 2],
-            [0, -1, 1],
-            [0, -1, -2],
-            [0, 1, 2],
-            [0, -fieldSize - 1 , fieldSize + 1],
-            [0, -fieldSize + 1, fieldSize - 1],
-            [0, -fieldSize + 1, -fieldSize * 2 + 2],
-            [0, fieldSize + 1, fieldSize * 2 + 2],
-            [0, fieldSize - 1, fieldSize * 2 - 2],
-            [0, -fieldSize - 1, -fieldSize * 2 - 2]
-        ];
-        return winCombinations;
+    generateFieldWithRowAndCols() {
+        const gameFieldWithRowAndCols = [];
+        const rowLimits = [0, this.#_fieldSize];
+        for (let index = 0; index < this.#_fieldSize; index++) {
+            gameFieldWithRowAndCols.push([...this.#field.slice(rowLimits[0], rowLimits[1])]);
+            rowLimits[0] += this.#_fieldSize;
+            rowLimits[1] += this.#_fieldSize;
+        }
+        return gameFieldWithRowAndCols;
     }
 
     setSymbolToSelectedFieldCell(currentStepSymbol, selectedCellNumber) {
@@ -140,29 +144,41 @@ class CellsField {
     }
 
     isWinCombination(currentSymbol) {
-        let isWin = false;
-        for (let currentCellIndex = 0; currentCellIndex < this.#field.length; currentCellIndex++) {
-            for (let winCombIndex = 0; winCombIndex < this.#winCombinations.length; winCombIndex++) {
-                if (this.#field[currentCellIndex + this.#winCombinations[winCombIndex][0]] === currentSymbol
-                    && this.#field[currentCellIndex + this.#winCombinations[winCombIndex][1]] === currentSymbol
-                    && this.#field[currentCellIndex + this.#winCombinations[winCombIndex][2]] === currentSymbol) {
-                    isWin = true;
-                    break;
+        const gameFieldWithRowAndCols = this.generateFieldWithRowAndCols();
+        console.log(gameFieldWithRowAndCols);
+
+        for (let rowIndex = 0; rowIndex < this.#_fieldSize; rowIndex++) {
+            for (let columnIndex = 0; columnIndex < this.#_fieldSize; columnIndex++) {
+                for (let rowCombinationIndex = 0; rowCombinationIndex < this.#winCombinations.length; rowCombinationIndex++) {
+                    const winCombination = this.#winCombinations[rowCombinationIndex];
+                    if ((
+                        gameFieldWithRowAndCols[rowIndex + winCombination[0][0]] !== undefined
+                            && gameFieldWithRowAndCols[rowIndex + winCombination[0][0]][columnIndex + winCombination[0][1]] !== undefined 
+                            && gameFieldWithRowAndCols[rowIndex + winCombination[0][0]][columnIndex + winCombination[0][1]] === currentSymbol)
+                        && (gameFieldWithRowAndCols[rowIndex + winCombination[1][0]] !== undefined
+                            && gameFieldWithRowAndCols[rowIndex + winCombination[1][0]][columnIndex + winCombination[1][1]] !== undefined 
+                            && gameFieldWithRowAndCols[rowIndex + winCombination[1][0]][columnIndex + winCombination[1][1]] === currentSymbol)
+                        && (gameFieldWithRowAndCols[rowIndex + winCombination[2][0]] !== undefined
+                            && gameFieldWithRowAndCols[rowIndex + winCombination[2][0]][columnIndex + winCombination[2][1]] !== undefined 
+                            && gameFieldWithRowAndCols[rowIndex + winCombination[2][0]][columnIndex + winCombination[2][1]] === currentSymbol)
+                    ) {
+                        return true;
+                    }
                 }
-            } 
-            if (isWin === true) {
-                break
-            }       
+            }
         }
-        return isWin;
+        return false;
     }
 }
 
 class GameSymbols {
-    #_secondStepSymbol;
     #_currentStepSymbol;
     #_firstStepSymbol;
-    constructor(firstStepSymbol, secondStepSymbol) {
+    #_secondStepSymbol;
+    constructor(
+        firstStepSymbol, 
+        secondStepSymbol,
+    ) {
         this.#_firstStepSymbol = firstStepSymbol;
         this.#_secondStepSymbol = secondStepSymbol;
         this.#_currentStepSymbol = this.firstStepSymbol;
@@ -235,8 +251,8 @@ class TicTacToeGame {
     #htmlMessageHeading;
     #isGameStarts;
     constructor(
-        firstStepSymbol, 
-        secondStepSymbol, 
+        firstStepSymbol,
+        secondStepSymbol,
         messageHeadingIdName, 
         fieldSize,
         fieldIdName,
@@ -245,7 +261,7 @@ class TicTacToeGame {
         fieldCellTagName,
         fieldCellsClassName, 
         fieldCellIdName,
-        ) {
+    ) {
         this.gameField = new CellsField(fieldSize);
         this.htmlGameField = new HtmlCellsField(
             fieldSize,
@@ -256,7 +272,10 @@ class TicTacToeGame {
             fieldCellsClassName, 
             fieldCellIdName
         );
-        this.#gameSymbols = new GameSymbols(firstStepSymbol, secondStepSymbol);
+        this.#gameSymbols = new GameSymbols(
+            firstStepSymbol, 
+            secondStepSymbol, 
+        );
         this.#gameMode = new GameMode();
         this.#htmlMessageHeading = new MessageHeading(messageHeadingIdName);
         this.#isGameStarts = false;
@@ -349,6 +368,8 @@ const fieldCellIdName = "cell";
 const fieldRowIdAndClassName = "field__row";
 const firstStepSymbol = "X";
 const secondStepSymbol = "O";
+const firstStepSymbolClassName = "controll-buttons__controll-button_color-blue";
+const secondStepSymbolClassName = "controll-buttons__controll-button_color-red";
 const initialFieldSize = 3;
 const allHtmlCells = document.getElementsByClassName(fieldCellsClassName);
 const headingMessageIdName = "messageHeading";
@@ -358,8 +379,8 @@ const playerVsPlayerButton = document.getElementById("playerVsPlayerButton");
 const playerVsComputerButton = document.getElementById("playerVsComputerButton");
 const fieldSizeSelect = document.getElementById("fieldSizeSelect");
 const ticTacToeGame = new TicTacToeGame(
-    firstStepSymbol, 
-    secondStepSymbol, 
+    firstStepSymbol,
+    secondStepSymbol,
     headingMessageIdName, 
     initialFieldSize,
     fieldIdName,
@@ -429,7 +450,7 @@ function onPlayerVsComputerButtonClick() {
 function onFieldSizeSelectChange(event) {
     const newFieldSize = event.target.value;
 
-    if (gameInitializationButton.isClicked) {
+    if (! gameInitializationButton.isClicked) {
         ticTacToeGame.refreshGame();
     }
     ticTacToeGame.gameField.generateField(newFieldSize); 
