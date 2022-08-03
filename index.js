@@ -1,6 +1,10 @@
 "use strict";
 
 class HtmlCellsField {
+    #firstStepSymbol;
+    #firstStepSymbolClassName;
+    #secondStepSymbol;
+    #secondStepSymbolClassName;
     #_field;
     #_fieldIdName;
     #_rowIdAndClassName;
@@ -8,6 +12,7 @@ class HtmlCellsField {
     #_cellTagName;
     #_cellIdName;
     #_cellClassName;
+    #htmlMessageHeading;
     #allHtmlCells;
     constructor(
         fieldSize,
@@ -17,7 +22,16 @@ class HtmlCellsField {
         fieldCellTagName,
         cellClassName, 
         cellIdName,
-        ) {
+        firstStepSymbol,
+        firtsStepSymbolClassName,
+        secondStepSymbol,
+        secondStepSymbolClassName,
+        messageHeadingIdName
+    ) {
+        this.#firstStepSymbol = firstStepSymbol;
+        this.#secondStepSymbol = secondStepSymbol;
+        this.#firstStepSymbolClassName = firtsStepSymbolClassName;
+        this.#secondStepSymbolClassName = secondStepSymbolClassName;
         this.#_rowIdAndClassName = fieldRowIdAndClassName;
         this.#_rowTagName = fieldRowTagName;
         this.#_cellTagName = fieldCellTagName;
@@ -25,24 +39,52 @@ class HtmlCellsField {
         this.#_cellClassName = cellClassName;
         this.#_fieldIdName = fieldIdName;
         this.#_field = this.generateField(fieldSize);
+        this.#htmlMessageHeading = document.getElementById(messageHeadingIdName);
         this.#allHtmlCells = document.getElementsByClassName(this.#_cellClassName);
     }
 
-    refresh() {
+    refreshHtnlCells() {
         for (let cellIndex = 0; cellIndex < this.#allHtmlCells.length; cellIndex++) {
             this.#allHtmlCells[cellIndex].innerHTML = "";
+            this.#allHtmlCells[cellIndex].classList.remove(this.#firstStepSymbolClassName);
+            this.#allHtmlCells[cellIndex].classList.remove(this.#secondStepSymbolClassName);
+        }
+    }
+
+    refreshHeadingMessage() {
+        this.#htmlMessageHeading.innerHTML = "";
+        this.#htmlMessageHeading.classList.remove(this.#firstStepSymbolClassName);
+        this.#htmlMessageHeading.classList.remove(this.#secondStepSymbolClassName);
+    }
+
+    setHeadingInnerHtml(message) {
+        this.#htmlMessageHeading.innerHTML = message;
+        if (message.slice(0, 1) === this.#firstStepSymbol) {
+            this.#htmlMessageHeading.classList.remove(this.#secondStepSymbolClassName);
+            this.#htmlMessageHeading.classList.add(this.#firstStepSymbolClassName);
+            
+        } else if (message.slice(0, 1) === this.#secondStepSymbol) {
+            this.#htmlMessageHeading.classList.remove(this.#firstStepSymbolClassName);
+            this.#htmlMessageHeading.classList.add(this.#secondStepSymbolClassName);
         }
     }
 
     setSymbolToSelctedHtmlCell(currentStepSymbol, cellId) {
         const selectedCell = document.getElementById(`cell${cellId}`);
         selectedCell.innerHTML = currentStepSymbol;
+
+        if (currentStepSymbol === this.#firstStepSymbol) {
+            selectedCell.classList.add(this.#firstStepSymbolClassName)
+        } else {
+            selectedCell.classList.add(this.#secondStepSymbolClassName)
+        }
     }
 
     generateField(fieldSize) {
         let currentCellId = 0;
         const field = document.getElementById(this.#_fieldIdName);
         field.innerHTML = "";
+
         for (let rowIndex = 0; rowIndex < fieldSize; rowIndex++) {
             const row = this.generateRow();
             for (let columnIndex = 0; columnIndex < fieldSize; columnIndex++) {
@@ -56,16 +98,20 @@ class HtmlCellsField {
 
     generateCell(cellId) {
         const cell = document.createElement(this.#_cellTagName);
+
         cell.setAttribute("id", `${this.#_cellIdName}${cellId}`);
         cell.classList.add(this.#_cellClassName);
         cell.addEventListener('click', onCellClick);
+
         return cell;
     }
 
     generateRow() {
         const row = document.createElement(this.#_rowTagName);
+
         row.setAttribute("id", this.#_rowIdAndClassName);
         row.classList.add(this.#_rowIdAndClassName);
+
         return row;
     }
 } 
@@ -145,7 +191,6 @@ class CellsField {
 
     isWinCombination(currentSymbol) {
         const gameFieldWithRowAndCols = this.generateFieldWithRowAndCols();
-        console.log(gameFieldWithRowAndCols);
 
         for (let rowIndex = 0; rowIndex < this.#_fieldSize; rowIndex++) {
             for (let columnIndex = 0; columnIndex < this.#_fieldSize; columnIndex++) {
@@ -230,29 +275,15 @@ class GameMode {
     }
 }
 
-class MessageHeading {
-    #_htmlMessageHeading;
-    constructor(headingIdName) {
-        this.#_htmlMessageHeading = document.getElementById(headingIdName);
-    }
-    
-    setInnerHtml(message) {
-        this.#_htmlMessageHeading.innerHTML = message;
-    }
-
-    refresh() {
-        this.#_htmlMessageHeading.innerHTML = "";
-    }
-}
-
 class TicTacToeGame {
     #gameSymbols;
     #gameMode;
-    #htmlMessageHeading;
     #isGameStarts;
     constructor(
         firstStepSymbol,
+        firstStepSymbolClassName,
         secondStepSymbol,
+        secondStepSymbolClassName,
         messageHeadingIdName, 
         fieldSize,
         fieldIdName,
@@ -270,22 +301,26 @@ class TicTacToeGame {
             fieldRowTagName,
             fieldCellTagName,
             fieldCellsClassName, 
-            fieldCellIdName
+            fieldCellIdName,
+            firstStepSymbol,
+            firstStepSymbolClassName,
+            secondStepSymbol,
+            secondStepSymbolClassName,
+            messageHeadingIdName
         );
         this.#gameSymbols = new GameSymbols(
             firstStepSymbol, 
             secondStepSymbol, 
         );
         this.#gameMode = new GameMode();
-        this.#htmlMessageHeading = new MessageHeading(messageHeadingIdName);
         this.#isGameStarts = false;
     }
 
     refreshGame() {
         this.gameField.refresh();
-        this.htmlGameField.refresh();
+        this.htmlGameField.refreshHeadingMessage();
+        this.htmlGameField.refreshHtnlCells();
         this.#gameSymbols.refresh();
-        this.#htmlMessageHeading.refresh();
         if (!this.#isGameStarts) {
             this.toggleIsGameStarts()
         }
@@ -334,7 +369,7 @@ class TicTacToeGame {
         this.htmlGameField.setSymbolToSelctedHtmlCell(currentStepSymbol, clickedCellId);
 
         const currentHeadingMessage = ticTacToeGame.getGameEndMessage();
-        this.#htmlMessageHeading.setInnerHtml(currentHeadingMessage);
+        this.htmlGameField.setHeadingInnerHtml(currentHeadingMessage);
 
         this.#gameSymbols.togglecurrentStepSymbol();
     }
@@ -380,7 +415,9 @@ const playerVsComputerButton = document.getElementById("playerVsComputerButton")
 const fieldSizeSelect = document.getElementById("fieldSizeSelect");
 const ticTacToeGame = new TicTacToeGame(
     firstStepSymbol,
+    firstStepSymbolClassName,
     secondStepSymbol,
+    secondStepSymbolClassName,
     headingMessageIdName, 
     initialFieldSize,
     fieldIdName,
