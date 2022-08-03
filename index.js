@@ -74,9 +74,9 @@ class HtmlCellsField {
         selectedCell.innerHTML = currentStepSymbol;
 
         if (currentStepSymbol === this.#firstStepSymbol) {
-            selectedCell.classList.add(this.#firstStepSymbolClassName)
+            selectedCell.classList.add(this.#firstStepSymbolClassName);
         } else {
-            selectedCell.classList.add(this.#secondStepSymbolClassName)
+            selectedCell.classList.add(this.#secondStepSymbolClassName);
         }
     }
 
@@ -87,10 +87,12 @@ class HtmlCellsField {
 
         for (let rowIndex = 0; rowIndex < fieldSize; rowIndex++) {
             const row = this.generateRow();
+
             for (let columnIndex = 0; columnIndex < fieldSize; columnIndex++) {
                 const cell = this.generateCell(currentCellId);
-                currentCellId++;
                 row.appendChild(cell);
+
+                currentCellId++;
             }
             field.appendChild(row);
         }
@@ -161,11 +163,14 @@ class CellsField {
     generateFieldWithRowAndCols() {
         const gameFieldWithRowAndCols = [];
         const rowLimits = [0, this.#_fieldSize];
+
         for (let index = 0; index < this.#_fieldSize; index++) {
             gameFieldWithRowAndCols.push([...this.#field.slice(rowLimits[0], rowLimits[1])]);
+
             rowLimits[0] += this.#_fieldSize;
             rowLimits[1] += this.#_fieldSize;
         }
+
         return gameFieldWithRowAndCols;
     }
 
@@ -177,6 +182,7 @@ class CellsField {
         if (this.#field[cellNumber] === "") {
             return true;
         }
+
         return false;
     }
 
@@ -186,6 +192,7 @@ class CellsField {
 
     isDraw() {
         const isAllCellsTaken = this.#field.every((cell) => cell !== "");
+
         return isAllCellsTaken;
     }
 
@@ -195,7 +202,9 @@ class CellsField {
         for (let rowIndex = 0; rowIndex < this.#_fieldSize; rowIndex++) {
             for (let columnIndex = 0; columnIndex < this.#_fieldSize; columnIndex++) {
                 for (let rowCombinationIndex = 0; rowCombinationIndex < this.#winCombinations.length; rowCombinationIndex++) {
+                    
                     const winCombination = this.#winCombinations[rowCombinationIndex];
+
                     if ((
                         gameFieldWithRowAndCols[rowIndex + winCombination[0][0]] !== undefined
                             && gameFieldWithRowAndCols[rowIndex + winCombination[0][0]][columnIndex + winCombination[0][1]] !== undefined 
@@ -322,7 +331,7 @@ class TicTacToeGame {
         this.htmlGameField.refreshHtnlCells();
         this.#gameSymbols.refresh();
         if (!this.#isGameStarts) {
-            this.toggleIsGameStarts()
+            this.toggleIsGameStarts();
         }
     }
 
@@ -341,7 +350,7 @@ class TicTacToeGame {
         }
         if (this.gameField.isDraw()) {
             this.toggleIsGameStarts();
-            return "draw";
+            return "Draw";
         }
         return "";
     }
@@ -497,5 +506,6 @@ function onFieldSizeSelectChange(event) {
 function getCellIdFromIdName(cellId) {
     let clickedCellId = cellId.slice(-2);
     clickedCellId = isNaN(parseInt(clickedCellId)) ? clickedCellId.slice(-1): clickedCellId;
+    
     return clickedCellId;
 }
