@@ -40,7 +40,7 @@ class HtmlCellsField {
         this.#_fieldIdName = fieldIdName;
         this.#_field = this.generateField(fieldSize);
         this.#htmlMessageHeading = document.getElementById(messageHeadingIdName);
-        this.#allHtmlCells = document.getElementsByClassName(this.#_cellClassName);
+        this.#allHtmlCells = window.document.getElementsByClassName(this.#_cellClassName);
     }
 
     refreshHtnlCells() {
