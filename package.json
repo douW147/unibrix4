@@ -19,5 +19,8 @@
     "url": "https://github.com/douW147/unibrix4/issues"
   },
   "homepage": "https://github.com/douW147/unibrix4#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
 }
