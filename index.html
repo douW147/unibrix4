@@ -24,22 +24,14 @@
         <button onClick="onPlayerVsComputerButtonClick()" id="playerVsComputerButton" value="true" class="controll-buttons__controll-button controll-buttons__controll-button_sm controll-buttons__controll-button_disabled">
             1 vs computer
         </button>
-        <select id="fieldSizeSelect" onchange="onFieldSizeSelectChange(event)">
-            <option value="3">3x3</option>
-            <option value="4">4x4</option>
-            <option value="5">5x5</option>
-            <option value="6">6x6</option>
-            <option value="7">7x7</option>
-            <option value="8">8x8</option>
-            <option value="9">9x9</option>
-            <option value="10">10x10</option>
-        </select>
+        <input id="fieldSizeSelect" value="3" onchange="onFieldSizeSelectChange(event)">
+        </input>
     </div>
     <h1 class="message" id="messageHeading"></h1>
     <div class="container">
         <div id="field" class="field">
         </div>
     </div>
-    <script src="./index.js"></script>
+    <script src="./app.js"></script>
 </body>
 </html>
