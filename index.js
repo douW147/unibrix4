@@ -7,7 +7,7 @@ class HtmlCellsField {
     #_rowTagName;
     #_cellTagName;
     #_cellIdName;
-    #_cellClassName
+    #_cellClassName;
     #allHtmlCells;
     constructor(
         fieldSize,
@@ -77,17 +77,8 @@ class CellsField {
     constructor(fieldSize) {
         this.#field;
         this.#_fieldSize = fieldSize;
+        this.#winCombinations = this.generateWinCombinations(fieldSize);
         this.generateField(fieldSize);
-        this.#winCombinations = [
-            [0, 1, 2], 
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5 ,8],
-            [0, 4 ,8],
-            [2, 4, 6]
-        ];
     }
 
     refresh() {
@@ -104,8 +95,28 @@ class CellsField {
     }
 
     generateField(fieldSize) {
-        const field = new Array(fieldSize * fieldSize).fill("");
-        this.#field = field;
+        this.#field = new Array(fieldSize * fieldSize).fill("");
+        this.#_fieldSize = fieldSize;
+        this.#winCombinations = this.generateWinCombinations(fieldSize);
+    }
+
+    generateWinCombinations(fieldSize) {
+        fieldSize = parseInt(fieldSize);
+        const winCombinations = [
+            [0, -fieldSize, fieldSize], 
+            [0, fieldSize, fieldSize * 2],
+            [0, -fieldSize, fieldSize * 2],
+            [0, -1, 1],
+            [0, -1, -2],
+            [0, 1, 2],
+            [0, -fieldSize - 1 , fieldSize + 1],
+            [0, -fieldSize + 1, fieldSize - 1],
+            [0, -fieldSize + 1, -fieldSize * 2 + 2],
+            [0, fieldSize + 1, fieldSize * 2 + 2],
+            [0, fieldSize - 1, fieldSize * 2 - 2],
+            [0, -fieldSize - 1, -fieldSize * 2 - 2]
+        ];
+        return winCombinations;
     }
 
     setSymbolToSelectedFieldCell(currentStepSymbol, selectedCellNumber) {
@@ -129,13 +140,20 @@ class CellsField {
     }
 
     isWinCombination(currentSymbol) {
-        const isWin = this.#winCombinations.some((winningCellsCombination) => {
-            if (this.#field[winningCellsCombination[0]] === currentSymbol
-                && this.#field[winningCellsCombination[1]] === currentSymbol
-                && this.#field[winningCellsCombination[2]] === currentSymbol) {
-                return true;
-            }
-        });
+        let isWin = false;
+        for (let currentCellIndex = 0; currentCellIndex < this.#field.length; currentCellIndex++) {
+            for (let winCombIndex = 0; winCombIndex < this.#winCombinations.length; winCombIndex++) {
+                if (this.#field[currentCellIndex + this.#winCombinations[winCombIndex][0]] === currentSymbol
+                    && this.#field[currentCellIndex + this.#winCombinations[winCombIndex][1]] === currentSymbol
+                    && this.#field[currentCellIndex + this.#winCombinations[winCombIndex][2]] === currentSymbol) {
+                    isWin = true;
+                    break;
+                }
+            } 
+            if (isWin === true) {
+                break
+            }       
+        }
         return isWin;
     }
 }
@@ -256,6 +274,10 @@ class TicTacToeGame {
 
     get gameMode() {
         return this.#gameMode;
+    }
+
+    get gameSembolsRefresh() {
+        return this.#gameSymbols.refresh;
     }
 
     getGameEndMessage() {
@@ -406,6 +428,10 @@ function onPlayerVsComputerButtonClick() {
 
 function onFieldSizeSelectChange(event) {
     const newFieldSize = event.target.value;
+
+    if (gameInitializationButton.isClicked) {
+        ticTacToeGame.refreshGame();
+    }
     ticTacToeGame.gameField.generateField(newFieldSize); 
     ticTacToeGame.htmlGameField.generateField(newFieldSize);  
 }
