@@ -76,7 +76,7 @@ class HtmlCellsField {
 
         if (currentStepSymbol === this.#firstStepSymbol) {
             selectedCell.classList.add(this.#firstStepSymbolClassName);
-        } else {
+        } else if(currentStepSymbol === this.#secondStepSymbol) {
             selectedCell.classList.add(this.#secondStepSymbolClassName);
         }
     }
@@ -285,6 +285,14 @@ class GameLocalStorage {
         this.gameLocalStorage = window.localStorage;
     }
 
+    refresh() {
+        const field = this.getField();
+        for (let cellIndex = 0; cellIndex < field.length; cellIndex++) {
+            field[cellIndex] = "";
+        }
+        this.setGameFieldToLocalStorrage(field.join(","));
+    }
+
     isLocalStorrageEmpty() {
         return this.gameLocalStorage[this.fieldName]  === undefined;
     }
@@ -352,6 +360,7 @@ class TicTacToeGame {
 
     refreshGame() {
         this.gameField.refresh();
+        this.gameStorage.refresh();
         this.htmlGameField.refreshHeadingMessage();
         this.htmlGameField.refreshHtnlCells();
         this.#gameSymbols.refresh();
