@@ -48,7 +48,7 @@ function onGameInitializationButtonClick(event) {
     if (!ticTacToeGame.gameStorage.isOneOfFieldUndefined()) {
         ticTacToeGame.setGameDataFromLocalStorrage();
     } else {
-        ticTacToeGame.gameStorage.isGameVsComputer(false)
+        ticTacToeGame.gameStorage.isGameVsComputer = false;
     };
 
     event.target.classList.add(disableButtonClassName);
