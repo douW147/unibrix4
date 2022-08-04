@@ -1,9 +1,20 @@
 "use strict";
 
-import TicTacToeGame from "./classes/ticTacToeClass.js";
-import GameInitializationButton from "./classes/gameInitializationButtonClass";
+class HtmlCellsField {
+    #firstStepSymbol;
+    #firstStepSymbolClassName;
+    #secondStepSymbol;
+    #secondStepSymbolClassName;
+    #_field;
+    #_fieldIdName;
+    #_rowIdAndClassName;
+    #_rowTagName;
+    #_cellTagName;
+    #_cellIdName;
+    #_cellClassName;
+    #htmlMessageHeading;
+    #allHtmlCells;
 
-<<<<<<< HEAD
     constructor(
         fieldSize,
         fieldIdName,
@@ -478,9 +489,6 @@ const ticTacToeGame = new TicTacToeGame(
     fieldCellsClassName, 
     fieldCellIdName,
     );
-=======
-const ticTacToeGame = new TicTacToeGame();
->>>>>>> 25fd1eddb13496ceb47b6bb5e10879d3f36cdfa8
 const gameInitializationButton = new GameInitializationButton(true);
 
 function onCellClick(event) {
