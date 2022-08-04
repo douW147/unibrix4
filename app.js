@@ -490,6 +490,11 @@ const ticTacToeGame = new TicTacToeGame(
     fieldCellIdName,
     );
 const gameInitializationButton = new GameInitializationButton(true);
+document.getElementById("gameInitializationButton").addEventListener("click", onGameInitializationButtonClick);
+document.getElementById("refreshButton").addEventListener("click", onRefreshClick);
+document.getElementById("playerVsPlayerButton").addEventListener("click", onPlayerVsPlayerButtonClick);
+document.getElementById("playerVsComputerButton").addEventListener("click", onPlayerVsComputerButtonClick);
+document.getElementById("fieldSizeSelect").onchange = onFieldSizeSelectChange;
 
 function onCellClick(event) {
     const clickedCellId = getCellIdFromIdName(event.target.id);

@@ -12,19 +12,19 @@
 </head>
 <body>
     <div class="controll-buttons">
-        <button onclick="onGameInitializationButtonClick(event)" id="gameInitializationButton" class="controll-buttons__controll-button">
+        <button id="gameInitializationButton" class="controll-buttons__controll-button">
             <i class="fa-solid fa-play"></i>
         </button>
-        <button onclick="onRefreshClick()" id="refreshButton" class="controll-buttons__controll-button controll-buttons__controll-button_disabled">
+        <button id="refreshButton" class="controll-buttons__controll-button controll-buttons__controll-button_disabled">
             <i class="fa-solid fa-arrow-rotate-right"></i>
         </button>
-        <button onclick="onPlayerVsPlayerButtonClick()" id="playerVsPlayerButton" value="false" class="controll-buttons__controll-button controll-buttons__controll-button_sm">
+        <button id="playerVsPlayerButton" value="false" class="controll-buttons__controll-button controll-buttons__controll-button_sm">
             1 vs 1
         </button>
-        <button onclick="onPlayerVsComputerButtonClick()" id="playerVsComputerButton" value="true" class="controll-buttons__controll-button controll-buttons__controll-button_sm controll-buttons__controll-button_disabled">
+        <button id="playerVsComputerButton" value="true" class="controll-buttons__controll-button controll-buttons__controll-button_sm controll-buttons__controll-button_disabled">
             1 vs computer
         </button>
-        <input id="fieldSizeSelect" type="number" value="3" onchange="onFieldSizeSelectChange(event)">
+        <input id="fieldSizeSelect" type="number" value="3">
         </input>
     </div>
     <h1 class="message" id="messageHeading"></h1>
