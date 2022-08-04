@@ -288,10 +288,18 @@ class GameLocalStorage {
     isLocalStorrageEmpty() {
         return this.gameLocalStorage[this.fieldName]  === undefined;
     }
+
+    getFieldSize() {
+        return this.gameLocalStorage["fieldSize"];
+    }
     
     getField() {
         const fieldArray = this.gameLocalStorage[this.fieldName].split(",");
         return fieldArray;
+    }
+
+    setFieldSize(fieldSize) {
+        this.gameLocalStorage["fieldSize"] = fieldSize;
     }
 
     setGameFieldToLocalStorrage(value) {
@@ -342,10 +350,6 @@ class TicTacToeGame {
         this.gameStorage = new GameLocalStorage(this.fieldName);
     }
 
-    readLocalStorrage() {
-        this.gameField.setFieldFromLocalStorrage();
-    }
-
     refreshGame() {
         this.gameField.refresh();
         this.htmlGameField.refreshHeadingMessage();
@@ -379,10 +383,17 @@ class TicTacToeGame {
 
     setFieldFromLocalStorrage() {
         const fieldFromLocalStorage = this.gameStorage.getField();
+        const fieldSize = this.gameStorage.getFieldSize();
+
+        this.gameField.generateField(fieldSize); 
+        this.htmlGameField.generateField(fieldSize); 
+
         fieldFromLocalStorage.forEach((currentCell, cellIndex) => {
             this.gameField.setSymbolToSelectedFieldCell(currentCell, cellIndex);
             this.htmlGameField.setSymbolToSelctedHtmlCell(currentCell, cellIndex);
-        })
+        });
+
+        document.getElementById("fieldSizeSelect").value = fieldSize;
     }
 
     toggleIsGameStarts() {
@@ -535,7 +546,9 @@ function onFieldSizeSelectChange(event) {
     if (! gameInitializationButton.isClicked) {
         ticTacToeGame.refreshGame();
     }
-    ticTacToeGame.gameField.generateField(newFieldSize); 
+    ticTacToeGame.gameStorage.setFieldSize(newFieldSize);
+    ticTacToeGame.gameField.generateField(newFieldSize);
+    ticTacToeGame.gameStorage.setGameFieldToLocalStorrage(ticTacToeGame.gameField.field);
     ticTacToeGame.htmlGameField.generateField(newFieldSize);  
 }
 
