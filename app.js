@@ -490,6 +490,7 @@ const ticTacToeGame = new TicTacToeGame(
     fieldCellIdName,
     );
 const gameInitializationButton = new GameInitializationButton(true);
+
 document.getElementById("gameInitializationButton").addEventListener("click", onGameInitializationButtonClick);
 document.getElementById("refreshButton").addEventListener("click", onRefreshClick);
 document.getElementById("playerVsPlayerButton").addEventListener("click", onPlayerVsPlayerButtonClick);
