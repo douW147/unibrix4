@@ -14,6 +14,7 @@ class HtmlCellsField {
     #_cellClassName;
     #htmlMessageHeading;
     #allHtmlCells;
+
     constructor(
         fieldSize,
         fieldIdName,
@@ -122,8 +123,9 @@ class CellsField {
     #field;
     #winCombinations;
     #_fieldSize;
+    
     constructor(fieldSize) {
-        this.#field;
+        this.field;
         this.#_fieldSize = parseInt(fieldSize);
         this.generateField(fieldSize);
         this.#winCombinations = [
@@ -143,12 +145,16 @@ class CellsField {
     }
 
     refresh() {
-        this.#field.fill("");
+        this.field.fill("");
+    }
+
+    setFieldFromLocalStorrage() {
+
     }
 
     getRandomCellIdForComputerStep() {
         while (true) {
-            const randomCellId = Math.floor(Math.random() * this.#field.length);
+            const randomCellId = Math.floor(Math.random() * this.field.length);
             if (this.isCellEmpty(randomCellId)) {
                 return randomCellId;
             }
@@ -156,7 +162,7 @@ class CellsField {
     }
 
     generateField(fieldSize) {
-        this.#field = new Array(fieldSize * fieldSize).fill("");
+        this.field = new Array(fieldSize * fieldSize).fill("");
         this.#_fieldSize = parseInt(fieldSize);
     }
 
@@ -165,7 +171,7 @@ class CellsField {
         const rowLimits = [0, this.#_fieldSize];
 
         for (let index = 0; index < this.#_fieldSize; index++) {
-            gameFieldWithRowAndCols.push([...this.#field.slice(rowLimits[0], rowLimits[1])]);
+            gameFieldWithRowAndCols.push([...this.field.slice(rowLimits[0], rowLimits[1])]);
 
             rowLimits[0] += this.#_fieldSize;
             rowLimits[1] += this.#_fieldSize;
@@ -175,25 +181,15 @@ class CellsField {
     }
 
     setSymbolToSelectedFieldCell(currentStepSymbol, selectedCellNumber) {
-        this.#field[selectedCellNumber] = currentStepSymbol;
+        this.field[selectedCellNumber] = currentStepSymbol;
     }
 
     isCellEmpty(cellNumber) {
-        if (this.#field[cellNumber] === "") {
-            return true;
-        }
-
-        return false;
+        return this.field[cellNumber] === "";
     }
 
     isAllCellsTaken() {
-        return this.#field.every((cell) => cell !== "");
-    }
-
-    isDraw() {
-        const isAllCellsTaken = this.#field.every((cell) => cell !== "");
-
-        return isAllCellsTaken;
+        return this.field.every((cell) => cell !== "");
     }
 
     isWinCombination(currentSymbol) {
@@ -202,7 +198,6 @@ class CellsField {
         for (let rowIndex = 0; rowIndex < this.#_fieldSize; rowIndex++) {
             for (let columnIndex = 0; columnIndex < this.#_fieldSize; columnIndex++) {
                 for (let rowCombinationIndex = 0; rowCombinationIndex < this.#winCombinations.length; rowCombinationIndex++) {
-                    
                     const winCombination = this.#winCombinations[rowCombinationIndex];
 
                     if ((
@@ -254,10 +249,10 @@ class GameSymbols {
         this.#_currentStepSymbol = stepsSymbol;
     }
 
-    togglecurrentStepSymbol() {
-        this.#_currentStepSymbol === this.#_secondStepSymbol
-            ? (this.#_currentStepSymbol = this.#_firstStepSymbol)
-            : (this.#_currentStepSymbol = this.#_secondStepSymbol);
+    toggleCurrentStepSymbol() {
+        this.#_currentStepSymbol = this.#_currentStepSymbol === this.#_secondStepSymbol
+            ? this.#_firstStepSymbol
+            : this.#_secondStepSymbol;
     }
 }
 
@@ -281,6 +276,26 @@ class GameMode {
 
     isPlayerVsComputerGameMode() {
         return !this.#isGameVsComputer;
+    }
+}
+
+class GameLocalStorage {
+    constructor(fieldName) {
+        this.fieldName = fieldName;
+        this.gameLocalStorage = window.localStorage;
+    }
+
+    isLocalStorrageEmpty() {
+        return this.gameLocalStorage[this.fieldName]  === undefined;
+    }
+    
+    getField() {
+        const fieldArray = this.gameLocalStorage[this.fieldName].split(",");
+        return fieldArray;
+    }
+
+    setGameFieldToLocalStorrage(value) {
+        this.gameLocalStorage.setItem(this.fieldName, value);
     }
 }
 
@@ -317,12 +332,18 @@ class TicTacToeGame {
             secondStepSymbolClassName,
             messageHeadingIdName
         );
+        this.fieldName = fieldIdName;
         this.#gameSymbols = new GameSymbols(
             firstStepSymbol, 
             secondStepSymbol, 
         );
         this.#gameMode = new GameMode();
         this.#isGameStarts = false;
+        this.gameStorage = new GameLocalStorage(this.fieldName);
+    }
+
+    readLocalStorrage() {
+        this.gameField.setFieldFromLocalStorrage();
     }
 
     refreshGame() {
@@ -348,11 +369,20 @@ class TicTacToeGame {
             this.toggleIsGameStarts();
             return `${this.#gameSymbols.currentStepSymbol} wins`;
         }
-        if (this.gameField.isDraw()) {
+
+        if (this.gameField.isAllCellsTaken()) {
             this.toggleIsGameStarts();
             return "Draw";
         }
         return "";
+    }
+
+    setFieldFromLocalStorrage() {
+        const fieldFromLocalStorage = this.gameStorage.getField();
+        fieldFromLocalStorage.forEach((currentCell, cellIndex) => {
+            this.gameField.setSymbolToSelectedFieldCell(currentCell, cellIndex);
+            this.htmlGameField.setSymbolToSelctedHtmlCell(currentCell, cellIndex);
+        })
     }
 
     toggleIsGameStarts() {
@@ -376,11 +406,12 @@ class TicTacToeGame {
 
         this.gameField.setSymbolToSelectedFieldCell(currentStepSymbol, clickedCellId);
         this.htmlGameField.setSymbolToSelctedHtmlCell(currentStepSymbol, clickedCellId);
+        this.gameStorage.setGameFieldToLocalStorrage(this.gameField.field);
 
         const currentHeadingMessage = ticTacToeGame.getGameEndMessage();
         this.htmlGameField.setHeadingInnerHtml(currentHeadingMessage);
 
-        this.#gameSymbols.togglecurrentStepSymbol();
+        this.#gameSymbols.toggleCurrentStepSymbol();
     }
     
     makeComputerStep() {
@@ -456,8 +487,12 @@ function onGameInitializationButtonClick(event) {
     if (!gameInitializationButton.isClicked) {
         return;
     }
+
     gameInitializationButton.isClicked = false;
     ticTacToeGame.toggleIsGameStarts();
+    if (!ticTacToeGame.gameStorage.isLocalStorrageEmpty()) {
+        ticTacToeGame.setFieldFromLocalStorrage();
+    };
 
     event.target.classList.add(disableButtonClassName);
     refreshButton.classList.remove(disableButtonClassName);
