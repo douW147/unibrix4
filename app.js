@@ -393,6 +393,7 @@ class TicTacToeGame {
     setFieldFromLocalStorrage() {
         const fieldFromLocalStorage = this.gameStorage.getField();
         const fieldSize = this.gameStorage.getFieldSize();
+        console.log(fieldFromLocalStorage, fieldSize);
 
         this.gameField.generateField(fieldSize); 
         this.htmlGameField.generateField(fieldSize); 
