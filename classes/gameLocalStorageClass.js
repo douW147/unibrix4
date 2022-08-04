@@ -23,6 +23,7 @@ class GameLocalStorage {
         this.#fieldNameOfIsGameVsComputer = fieldNameOfCurrentGameMode;
         this.#fieldNameOfCellsForWin = fieldNameOfCellsForWin;
         this.#gameLocalStorage = window.localStorage;
+        this.#gameLocalStorage[this.#fieldNameOfCellsForWin] = 3;
     }
 
     refresh() {
