@@ -516,7 +516,7 @@ function onGameInitializationButtonClick(event) {
     gameInitializationButton.isClicked = false;
     ticTacToeGame.toggleIsGameStarts();
     if (!ticTacToeGame.gameStorage.isFieldFromLocalStorrageEmpty()
-        && !ticTacToeGame.gameStorage.isFieldFromLocalStorrageEmpty()) {
+        && !ticTacToeGame.gameStorage.isFieldSizeFromLocalStorrageUndefined()) {
         ticTacToeGame.setFieldFromLocalStorrage();
     };
 
