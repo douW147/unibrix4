@@ -4,6 +4,7 @@ class GameInitializationButton {
     #_isAvailible;
     constructor() {
         this.#_isAvailible = true;
+        this.htmlButton = document.getElementById("gameInitializationButton")
     }
 
     get isClicked() {

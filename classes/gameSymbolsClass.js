@@ -3,17 +3,17 @@
 import {firstStepSymbol, secondStepSymbol} from "../constants/constants.js";
 
 class GameSymbols {
-    #_currentStepSymbol;
     #firstStepSymbol;
     #secondStepSymbol;
+    #currentStepSymbol
     constructor() {
         this.#firstStepSymbol = firstStepSymbol;
         this.#secondStepSymbol = secondStepSymbol;
-        this.#_currentStepSymbol = this.firstStepSymbol;
+        this.#currentStepSymbol = this.firstStepSymbol;
     }
 
     refresh() {
-        this.#_currentStepSymbol = this.#firstStepSymbol;
+        this.#currentStepSymbol = this.#firstStepSymbol;
     }
 
     get firstStepSymbol () {
@@ -21,15 +21,15 @@ class GameSymbols {
     }
 
     get currentStepSymbol() {
-        return this.#_currentStepSymbol;
+        return this.#currentStepSymbol;
     }
 
-    set currentStepSymbol(stepsSymbol) {
-        this.#_currentStepSymbol = stepsSymbol;
+    set currentStepSymbol(stepSymbol) {
+        this.#currentStepSymbol = stepSymbol;
     }
 
     toggleCurrentStepSymbol() {
-        this.#_currentStepSymbol = this.#_currentStepSymbol === this.#secondStepSymbol
+        this.#currentStepSymbol = this.#currentStepSymbol === this.#secondStepSymbol
             ? this.#firstStepSymbol
             : this.#secondStepSymbol;
     }

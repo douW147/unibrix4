@@ -1,12 +1,20 @@
 "use strict"
 
-import {fieldIdName, fieldNameOfGameFieldSize} from "../constants/constants.js";
+import {fieldIdName, fieldNameOfGameFieldSize, fieldNameOfCurrentSymbol, fieldNameOfCurrentGameMode} from "../constants/constants.js";
 
 class GameLocalStorage {
+    #fieldNameOfGameField;
+    #gameLocalStorage;
+    #fieldNameOfGameFieldSize;
+    #fieldNameOfCurrentSymbol;
+    #fieldNameOfIsGameVsComputer;
+
     constructor() {
         this.#fieldNameOfGameField = fieldIdName;
-        this.#gameLocalStorage = window.localStorage;
         this.#fieldNameOfGameFieldSize = fieldNameOfGameFieldSize;
+        this.#fieldNameOfCurrentSymbol = fieldNameOfCurrentSymbol;
+        this.#fieldNameOfIsGameVsComputer = fieldNameOfCurrentGameMode;
+        this.#gameLocalStorage = window.localStorage;
     }
 
     refresh() {
@@ -18,29 +26,63 @@ class GameLocalStorage {
     }
 
     isFieldSizeFromLocalStorrageUndefined() {
-        return this.gameLocalStorage[fieldNameOfGameFieldSize]  === undefined;
+        return this.#gameLocalStorage[this.#fieldNameOfGameFieldSize] === undefined;
     }
 
     isFieldFromLocalStorrageEmpty() {
-        return this.gameLocalStorage[this.fieldNameOfGameField]  === undefined;
+        return this.#gameLocalStorage[this.#fieldNameOfGameField]  === undefined;
+    }
+
+    isCurrentStepSymbolUndefined() {
+        this.#gameLocalStorage[this.#fieldNameOfCurrentSymbol] === undefined;
+    }
+
+    isGameVsComputerUndefined() {
+        return this.#gameLocalStorage[this.#fieldNameOfIsGameVsComputer] === undefined;
+    }
+
+    isOneOfFieldUndefined() {
+        return (
+            this.isGameVsComputerUndefined() 
+            || this.isCurrentStepSymbolUndefined()
+            || this.isFieldFromLocalStorrageEmpty()
+            || this.isFieldSizeFromLocalStorrageUndefined()
+        );
     }
 
     getFieldSize() {
-        return this.gameLocalStorage[fieldNameOfGameFieldSize];
+        return this.#gameLocalStorage[this.#fieldNameOfGameFieldSize];
     }
     
     getField() {
-        const fieldArray = this.gameLocalStorage[this.fieldNameOfGameField].split(",");
+        const fieldArray = this.#gameLocalStorage[this.#fieldNameOfGameField].split(",");
         return fieldArray;
     }
 
+    getCurrentStepSymbol() {
+        return this.#gameLocalStorage[this.#fieldNameOfCurrentSymbol];
+    }
+
+    getIsGameVsComputer() {
+        return this.#gameLocalStorage[this.#fieldNameOfIsGameVsComputer];
+    }
+
     setFieldSize(fieldSize) {
-        this.gameLocalStorage[fieldNameOfGameFieldSize] = fieldSize;
+        this.#gameLocalStorage[this.#fieldNameOfGameFieldSize] = fieldSize;
     }
 
     setGameFieldToLocalStorrage(value) {
-        this.gameLocalStorage.setItem(this.fieldNameOfGameField, value);
+        this.#gameLocalStorage.setItem(this.#fieldNameOfGameField, value);
     }
+
+    setCurrentStepSymbol(currentSymbol) {
+        this.#gameLocalStorage[this.#fieldNameOfCurrentSymbol] = currentSymbol;
+    }
+
+    setIsGameVsComputer(currentGameMode) {
+        this.#gameLocalStorage[this.#fieldNameOfIsGameVsComputer] = currentGameMode;
+    }
+      
 }
 
 export default GameLocalStorage;

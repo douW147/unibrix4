@@ -1,21 +1,24 @@
 "use strict"
 
 import {
-    fieldSize,
+    initialFieldSize,
     fieldIdName,
-} from "../constants/constants.js";
-import CellsField from "./gameFieldClass";
-import HtmlCellsField from "./htmlGameFieldClass";
-import GameSymbols from "./gameSymbolsClass";
-import GameMode from "./gameModeClass";
-import GameLocalStorage from "./gameLocalStorageClass";
+    } from "../constants/constants.js";
+
+import GameSymbols from "./gameSymbolsClass.js";
+import GameMode from "./gameModeClass.js";
+import GameLocalStorage from "./gameLocalStorageClass.js";
+import HtmlCellsField from "./htmlGameFieldClass.js";
+import CellsField from "./gameFieldClass.js";
+
+import { onPlayerVsComputerButtonClick } from "../app.js";
 
 class TicTacToeGame {
     #gameSymbols;
     #gameMode;
     #isGameStarts;
     constructor() {
-        this.gameField = new CellsField(fieldSize);
+        this.gameField = new CellsField(initialFieldSize);
         this.htmlGameField = new HtmlCellsField();
         this.fieldName = fieldIdName;
         this.#gameSymbols = new GameSymbols();
@@ -56,12 +59,18 @@ class TicTacToeGame {
         return "";
     }
 
-    setFieldFromLocalStorrage() {
+    setGameDataFromLocalStorrage() {
         const fieldFromLocalStorage = this.gameStorage.getField();
         const fieldSize = this.gameStorage.getFieldSize();
+        const currentStepSymbol = this.gameStorage.getCurrentStepSymbol();
 
         this.gameField.generateField(fieldSize); 
         this.htmlGameField.generateField(fieldSize); 
+        this.#gameSymbols.currentStepSymbol = currentStepSymbol;
+
+        if(this.gameStorage.getIsGameVsComputer() === "true") {
+            onPlayerVsComputerButtonClick(false)
+        }
 
         fieldFromLocalStorage.forEach((currentCell, cellIndex) => {
             this.gameField.setSymbolToSelectedFieldCell(currentCell, cellIndex);
@@ -94,10 +103,11 @@ class TicTacToeGame {
         this.htmlGameField.setSymbolToSelctedHtmlCell(currentStepSymbol, clickedCellId);
         this.gameStorage.setGameFieldToLocalStorrage(this.gameField.field);
 
-        const currentHeadingMessage = ticTacToeGame.getGameEndMessage();
+        const currentHeadingMessage = this.getGameEndMessage();
         this.htmlGameField.setHeadingInnerHtml(currentHeadingMessage);
 
         this.#gameSymbols.toggleCurrentStepSymbol();
+        this.gameStorage.setCurrentStepSymbol(this.#gameSymbols.currentStepSymbol); 
     }
     
     makeComputerStep() {
@@ -105,3 +115,5 @@ class TicTacToeGame {
         this.makeStep(cellIdForComputerStep);
     }
 }
+
+export default TicTacToeGame;

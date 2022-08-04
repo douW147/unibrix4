@@ -1,19 +1,18 @@
-const gameConstants = {
-    fieldIdName: "field",
-    fieldRowTagName: "div",
-    fieldRowTagName: "div",
-    fieldCellTagName: "div",
-    fieldCellsClassName: "field__cell",
-    fieldCellIdName: "cell",
-    fieldRowIdAndClassName: "field__row",
-    firstStepSymbol: "X",
-    secondStepSymbol: "O",
-    firstStepSymbolClassName: "controll-buttons__controll-button_color-blue",
-    secondStepSymbolClassName: "controll-buttons__controll-button_color-red",
-    initialFieldSize: 3,
-    headingMessageIdName: "messageHeading",
-    disableButtonClassName: "controll-buttons__controll-button_disabled",
-    fieldNameOfGameFieldSize: "fieldSize",
-}
-
-export default gameConstants;
+export const fieldIdName = "field";
+export const fieldRowTagName = "div";
+export const fieldCellTagName = "div";
+export const fieldCellsClassName = "field__cell";
+export const fieldCellIdName = "cell";
+export const fieldRowIdAndClassName = "field__row";
+export const firstStepSymbol = "X";
+export const secondStepSymbol = "O";
+export const firstStepSymbolClassName = "controll-buttons__controll-button_color-blue";
+export const secondStepSymbolClassName = "controll-buttons__controll-button_color-red";
+export const initialFieldSize = 3;
+export const headingMessageIdName = "messageHeading";
+export const disableButtonClassName = "controll-buttons__controll-button_disabled";
+export const fieldNameOfGameFieldSize = "fieldSize";
+export const fieldNameOfCurrentSymbol = "currentSymbol";
+export const cellClassName = "field__cell";
+export const cellIdName = "cell";
+export const fieldNameOfCurrentGameMode = "gameMode";

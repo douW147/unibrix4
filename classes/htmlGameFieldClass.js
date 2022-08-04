@@ -1,7 +1,7 @@
 "use strict"
 
 import {
-    firtsStepSymbolClassName, 
+    firstStepSymbolClassName, 
     secondStepSymbolClassName,
     fieldRowIdAndClassName,
     fieldRowTagName,
@@ -9,9 +9,10 @@ import {
     cellIdName,
     cellClassName,
     fieldIdName,
-    fieldSize,
-    messageHeadingIdName
+    initialFieldSize,
+    headingMessageIdName
 } from "../constants/constants.js";
+import { onCellClick } from "../app.js";
 
 class HtmlCellsField {
     #firstStepSymbol;
@@ -31,7 +32,7 @@ class HtmlCellsField {
     constructor() {
         this.#firstStepSymbol = "X";
         this.#secondStepSymbol = "O";
-        this.#firstStepSymbolClassName = firtsStepSymbolClassName;
+        this.#firstStepSymbolClassName = firstStepSymbolClassName;
         this.#secondStepSymbolClassName = secondStepSymbolClassName;
         this.#_rowIdAndClassName = fieldRowIdAndClassName;
         this.#_rowTagName = fieldRowTagName;
@@ -39,8 +40,8 @@ class HtmlCellsField {
         this.#_cellIdName = cellIdName;
         this.#_cellClassName = cellClassName;
         this.#_fieldIdName = fieldIdName;
-        this.#_field = this.generateField(fieldSize);
-        this.#htmlMessageHeading = document.getElementById(messageHeadingIdName);
+        this.#_field = this.generateField(initialFieldSize);
+        this.#htmlMessageHeading = document.getElementById(headingMessageIdName);
         this.#allHtmlCells = document.getElementsByClassName(this.#_cellClassName);
     }
 
