@@ -10,7 +10,8 @@ const refreshButton = document.getElementById("refreshButton");
 const playerVsPlayerButton = document.getElementById("playerVsPlayerButton");
 const playerVsComputerButton = document.getElementById("playerVsComputerButton");
 const fieldSizeSelect = document.getElementById("fieldSizeSelect");
-const HtmlGameInitializationButton = document.getElementById("gameInitializationButton")
+const HtmlGameInitializationButton = document.getElementById("gameInitializationButton");
+const cellForWinSelect = document.getElementById("fieldCellsCizeForWinSelect");
 
 const ticTacToeGame = new TicTacToeGame();
 const gameInitializationButton = new GameInitializationButton(true);
@@ -20,6 +21,7 @@ refreshButton.addEventListener("click", onRefreshClick);
 playerVsPlayerButton.addEventListener("click", onPlayerVsPlayerButtonClick);
 playerVsComputerButton.addEventListener("click", onPlayerVsComputerButtonClick);
 fieldSizeSelect.onchange = onFieldSizeSelectChange;
+cellForWinSelect.onchange = onCellSizeForWinChange;
 
 export function onCellClick(event) {
     const clickedCellId = getCellIdFromIdName(event.target.id);
@@ -49,6 +51,7 @@ function onGameInitializationButtonClick(event) {
         ticTacToeGame.setGameDataFromLocalStorrage();
     } else {
         ticTacToeGame.gameStorage.isGameVsComputer = false;
+        ticTacToeGame.gameStorage.setCellsQuantityForWin = 3;
     };
 
     event.target.classList.add(disableButtonClassName);
@@ -95,7 +98,9 @@ export function onPlayerVsComputerButtonClick(refreshFields = true) {
 
 function onFieldSizeSelectChange(event) {
     const newFieldSize = parseInt(event.target.value);
+
     if (newFieldSize < 3 || newFieldSize > 100) {
+        window.alert("Must be in range(3, 100)");
         return    
     }
 
@@ -107,6 +112,18 @@ function onFieldSizeSelectChange(event) {
     ticTacToeGame.gameField.generateField(newFieldSize);
     ticTacToeGame.gameStorage.setGameFieldToLocalStorrage(ticTacToeGame.gameField.field);
     ticTacToeGame.htmlGameField.generateField(newFieldSize);  
+}
+
+function onCellSizeForWinChange(event) {
+    const newCellSizeForWin = parseInt(event.target.value);
+
+    if (newCellSizeForWin < 3 || newCellSizeForWin > 100) {
+        window.alert("Must be in range(3, 100)");
+        return    
+    }
+
+    ticTacToeGame.gameField.lenghtForWin = newCellSizeForWin;
+    ticTacToeGame.gameStorage.setCellsQuantityForWin(newCellSizeForWin);
 }
 
 function getCellIdFromIdName(cellId) {

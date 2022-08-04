@@ -1,6 +1,12 @@
 "use strict"
 
-import {fieldIdName, fieldNameOfGameFieldSize, fieldNameOfCurrentSymbol, fieldNameOfCurrentGameMode} from "../constants/constants.js";
+import {
+    fieldIdName, 
+    fieldNameOfGameFieldSize, 
+    fieldNameOfCurrentSymbol, 
+    fieldNameOfCurrentGameMode,
+    fieldNameOfCellsForWin
+} from "../constants/constants.js";
 
 class GameLocalStorage {
     #fieldNameOfGameField;
@@ -8,12 +14,14 @@ class GameLocalStorage {
     #fieldNameOfGameFieldSize;
     #fieldNameOfCurrentSymbol;
     #fieldNameOfIsGameVsComputer;
+    #fieldNameOfCellsForWin;
 
     constructor() {
         this.#fieldNameOfGameField = fieldIdName;
         this.#fieldNameOfGameFieldSize = fieldNameOfGameFieldSize;
         this.#fieldNameOfCurrentSymbol = fieldNameOfCurrentSymbol;
         this.#fieldNameOfIsGameVsComputer = fieldNameOfCurrentGameMode;
+        this.#fieldNameOfCellsForWin = fieldNameOfCellsForWin;
         this.#gameLocalStorage = window.localStorage;
     }
 
@@ -43,12 +51,17 @@ class GameLocalStorage {
         return this.#gameLocalStorage[this.#fieldNameOfIsGameVsComputer] === undefined;
     }
 
+    isCellsForWinUndefined() {
+        this.#gameLocalStorage[this.#fieldNameOfCellsForWin] === undefined;
+    }
+
     isOneOfFieldUndefined() {
         return (
             this.isGameVsComputerUndefined() 
             || this.isCurrentStepSymbolUndefined()
             || this.isFieldFromLocalStorrageEmpty()
             || this.isFieldSizeFromLocalStorrageUndefined()
+            || this.isCellsForWinUndefined()
         );
     }
 
@@ -69,6 +82,10 @@ class GameLocalStorage {
         return this.#gameLocalStorage[this.#fieldNameOfIsGameVsComputer];
     }
 
+    getCellsQuantityForWin() {
+        return this.#gameLocalStorage[this.#fieldNameOfCellsForWin];
+    }
+
     setFieldSize(fieldSize) {
         this.#gameLocalStorage[this.#fieldNameOfGameFieldSize] = fieldSize;
     }
@@ -83,6 +100,10 @@ class GameLocalStorage {
 
     setIsGameVsComputer(currentGameMode) {
         this.#gameLocalStorage[this.#fieldNameOfIsGameVsComputer] = currentGameMode;
+    }
+
+    setCellsQuantityForWin(newCellSizeForWin) {
+        this.#gameLocalStorage[this.#fieldNameOfCellsForWin] = newCellSizeForWin;
     }
       
 }

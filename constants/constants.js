@@ -16,3 +16,4 @@ export const fieldNameOfCurrentSymbol = "currentSymbol";
 export const cellClassName = "field__cell";
 export const cellIdName = "cell";
 export const fieldNameOfCurrentGameMode = "gameMode";
+export const fieldNameOfCellsForWin = "fieldNameOfCellsForWin";

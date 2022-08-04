@@ -17,6 +17,7 @@ class TicTacToeGame {
     #gameSymbols;
     #gameMode;
     #isGameStarts;
+    
     constructor() {
         this.gameField = new CellsField(initialFieldSize);
         this.htmlGameField = new HtmlCellsField();
@@ -56,6 +57,7 @@ class TicTacToeGame {
             this.toggleIsGameStarts();
             return "Draw";
         }
+
         return "";
     }
 
@@ -63,10 +65,11 @@ class TicTacToeGame {
         const fieldFromLocalStorage = this.gameStorage.getField();
         const fieldSize = this.gameStorage.getFieldSize();
         const currentStepSymbol = this.gameStorage.getCurrentStepSymbol();
+        const currentLenghtForWin = this.gameStorage.getCellsQuantityForWin();
 
         this.gameField.generateField(fieldSize); 
         this.htmlGameField.generateField(fieldSize); 
-        this.#gameSymbols.currentStepSymbol = currentStepSymbol;
+        this.gameField.lenghtForWin = currentLenghtForWin;
 
         if(this.gameStorage.getIsGameVsComputer() === "true") {
             onPlayerVsComputerButtonClick(false)
@@ -77,7 +80,16 @@ class TicTacToeGame {
             this.htmlGameField.setSymbolToSelctedHtmlCell(currentCell, cellIndex);
         });
 
+        if ((this.getGameEndMessage() === "") === false) {
+            const currentHeadingMessage = this.getGameEndMessage();
+            this.htmlGameField.setHeadingInnerHtml(currentHeadingMessage);
+            this.toggleIsGameStarts();
+        }
+
+        this.#gameSymbols.currentStepSymbol = currentStepSymbol;
+
         document.getElementById("fieldSizeSelect").value = fieldSize;
+        document.getElementById("fieldCellsCizeForWinSelect").value = currentLenghtForWin;
     }
 
     toggleIsGameStarts() {
