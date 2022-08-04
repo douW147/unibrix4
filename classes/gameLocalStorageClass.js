@@ -26,7 +26,9 @@ class GameLocalStorage {
     }
 
     isFieldSizeFromLocalStorrageUndefined() {
-        return this.#gameLocalStorage[this.#fieldNameOfGameFieldSize] === undefined;
+        return (this.#gameLocalStorage[this.#fieldNameOfGameFieldSize] === undefined
+        || isNaN(this.#gameLocalStorage[this.#fieldNameOfGameFieldSize])
+        );
     }
 
     isFieldFromLocalStorrageEmpty() {
