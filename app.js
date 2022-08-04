@@ -293,7 +293,11 @@ class GameLocalStorage {
         this.setGameFieldToLocalStorrage(field.join(","));
     }
 
-    isLocalStorrageEmpty() {
+    isFieldSizeFromLocalStorrageUndefined() {
+        return this.gameLocalStorage["fieldSize"]  === undefined;
+    }
+
+    isFieldFromLocalStorrageEmpty() {
         return this.gameLocalStorage[this.fieldName]  === undefined;
     }
 
@@ -511,7 +515,8 @@ function onGameInitializationButtonClick(event) {
 
     gameInitializationButton.isClicked = false;
     ticTacToeGame.toggleIsGameStarts();
-    if (!ticTacToeGame.gameStorage.isLocalStorrageEmpty()) {
+    if (!ticTacToeGame.gameStorage.isFieldFromLocalStorrageEmpty()
+        && !ticTacToeGame.gameStorage.isFieldFromLocalStorrageEmpty()) {
         ticTacToeGame.setFieldFromLocalStorrage();
     };
 
