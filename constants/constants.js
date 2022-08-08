@@ -30,6 +30,8 @@ export const playerVsComputerButtonIdName = "playerVsComputerButton";
 export const fieldSizeSelectIdName = "fieldSizeSelect";
 export const fieldCellsSizeForWinSelectIdName = "fieldCellsSizeForWinSelect";
 export const gameInitializationButtonIdName = "gameInitializationButton"; 
+export const hintHeadingIdName = "hintHeading";
+export const hintHeadingDisableClassName = "hint-container__heading_disable";
 
 export const refreshButton = document.getElementById(refreshButtonIdName);
 export const playerVsPlayerButton = document.getElementById(playerVsPlayerButtonIdName);
@@ -37,6 +39,7 @@ export const playerVsComputerButton = document.getElementById(playerVsComputerBu
 export const fieldSizeSelect = document.getElementById(fieldSizeSelectIdName);
 export const HtmlGameInitializationButton = document.getElementById(gameInitializationButtonIdName);
 export const cellForWinSelect = document.getElementById(fieldCellsSizeForWinSelectIdName);
+export const htmlHintHeading = document.getElementById(hintHeadingIdName);
 
 export const disableButtonClassName = "controll-buttons__controll-button_disabled";
 

@@ -14,7 +14,7 @@ body {
     background-color: var(--bg);
 }
 
-.container {
+.field-container {
     padding: 0 10%;
     display: flex;
     justify-content: center;
@@ -47,7 +47,7 @@ body {
     align-items: center;
 }
 
-.controll-buttons {
+.container {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -55,12 +55,15 @@ body {
     margin: 2% 0;
 }
 
-.controll-inputs {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    margin: 2% 0;
+.hint-container__heading {
+    font-size: 4rem;
+    margin-bottom: 5%;
+    color:var(--x-color);
+    text-align: center;
+}
+
+.hint-container__heading_disable {
+    display: none;
 }
 
 .controll-buttons__controll-button {
@@ -70,6 +73,10 @@ body {
     margin: 0 2%;
     font-family: 'Rubik', sans-serif;
     font-weight: 800;
+}
+
+.controll-inputs__input-container {
+    margin-bottom: 2%;
 }
 
 .controll-buttons__controll-button_disabled {
@@ -105,13 +112,7 @@ input {
 @media only screen and (max-width: 576px) { 
 
     .controll-buttons {
-        margin-bottom: 10%;
-    }
-
-    .field__cell {
-        font-size: 1.7rem;
-        min-width: 30px;
-        min-height: 30px;
+        margin-bottom: 2%;
     }
 
     .field__row {
@@ -127,10 +128,6 @@ input {
         padding: 0;
         width: 50%;
     }
-
-}
-
-@media only screen and (max-width: 576px) { 
 
     .field__cell {
         font-size: 1.2rem;

@@ -9,10 +9,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,800;1,400&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="./favicon.png">
-    <title>Tic-tac-toe</title>
+    <title>TicTacToe</title>
 </head>
 <body>
-    <div class="controll-buttons">
+    <div class="container hint-container">
+        <h1 id="hintHeading" class="hint-container__heading">
+            Press play to start
+        </h1>
+    </div>
+    <div class="container controll-buttons">
         <button id="gameInitializationButton" class="controll-buttons__controll-button">
             <i class="fa-solid fa-play"></i>
         </button>
@@ -26,7 +31,7 @@
             1 vs computer
         </button>
     </div>
-    <div class="controll-inputs">
+    <div class="container controll-inputs">
         <div class="controll-inputs__input-container">
             <label for="fieldSizeSelect">Field size: </label>
             <input id="fieldSizeSelect" type="number" value="3"></input>
@@ -37,7 +42,7 @@
         </div>
     </div>
     <h1 class="message" id="messageHeading"></h1>
-    <div class="container">
+    <div class="field-container">
         <div id="field" class="field">
         </div>
     </div>

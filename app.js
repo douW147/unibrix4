@@ -6,12 +6,14 @@ import TicTacToeGame from "./classes/tic-tac-toe-class.js";
 import {
     fieldCellIdName, 
     disableButtonClassName,
+    hintHeadingDisableClassName,
     refreshButton,
     playerVsPlayerButton,
     playerVsComputerButton,
     fieldSizeSelect,
     cellForWinSelect,
-    HtmlGameInitializationButton
+    HtmlGameInitializationButton,
+    htmlHintHeading
 } from "./constants/constants.js";
 
 
@@ -56,6 +58,7 @@ function onGameInitializationButtonClick(event) {
         ticTacToeGame.gameStorage.setDefaultData();
     };
 
+    htmlHintHeading.classList.add(hintHeadingDisableClassName);
     event.target.classList.add(disableButtonClassName);
     refreshButton.classList.remove(disableButtonClassName);
 }
