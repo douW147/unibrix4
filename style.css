@@ -55,6 +55,14 @@ body {
     margin: 2% 0;
 }
 
+.controll-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin: 2% 0;
+}
+
 .controll-buttons__controll-button {
     border: none;
     background-color: var(--bg);
