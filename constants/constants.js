@@ -17,3 +17,5 @@ export const cellClassName = "field__cell";
 export const cellIdName = "cell";
 export const fieldNameOfCurrentGameMode = "gameMode";
 export const fieldNameOfCellsForWin = "fieldNameOfCellsForWin";
+export const initialCellsForWin = 3;
+export const initialIsGameVsComputer  = false;

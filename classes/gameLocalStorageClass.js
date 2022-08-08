@@ -5,7 +5,11 @@ import {
     fieldNameOfGameFieldSize, 
     fieldNameOfCurrentSymbol, 
     fieldNameOfCurrentGameMode,
-    fieldNameOfCellsForWin
+    fieldNameOfCellsForWin,
+    firstStepSymbol,
+    initialFieldSize,
+    initialCellsForWin,
+    initialIsGameVsComputer
 } from "../constants/constants.js";
 
 class GameLocalStorage {
@@ -23,7 +27,10 @@ class GameLocalStorage {
         this.#fieldNameOfIsGameVsComputer = fieldNameOfCurrentGameMode;
         this.#fieldNameOfCellsForWin = fieldNameOfCellsForWin;
         this.#gameLocalStorage = window.localStorage;
-        this.#gameLocalStorage[this.#fieldNameOfCellsForWin] = 3;
+        this.#gameLocalStorage[this.#fieldNameOfCellsForWin] = initialFieldSize;
+        this.#gameLocalStorage[this.#fieldNameOfCurrentSymbol] = firstStepSymbol;
+        this.#gameLocalStorage[this.#fieldNameOfGameFieldSize] = initialCellsForWin;
+        this.#gameLocalStorage[this.#fieldNameOfIsGameVsComputer] = initialIsGameVsComputer;
     }
 
     refresh() {
@@ -41,6 +48,7 @@ class GameLocalStorage {
     }
 
     isFieldFromLocalStorrageEmpty() {
+        console.log(this.#gameLocalStorage);
         return this.#gameLocalStorage[this.#fieldNameOfGameField]  === undefined;
     }
 
