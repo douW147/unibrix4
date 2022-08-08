@@ -27,10 +27,6 @@ class GameLocalStorage {
         this.#fieldNameOfIsGameVsComputer = fieldNameOfCurrentGameMode;
         this.#fieldNameOfCellsForWin = fieldNameOfCellsForWin;
         this.#gameLocalStorage = window.localStorage;
-        this.#gameLocalStorage[this.#fieldNameOfCellsForWin] = initialFieldSize;
-        this.#gameLocalStorage[this.#fieldNameOfCurrentSymbol] = firstStepSymbol;
-        this.#gameLocalStorage[this.#fieldNameOfGameFieldSize] = initialCellsForWin;
-        this.#gameLocalStorage[this.#fieldNameOfIsGameVsComputer] = initialIsGameVsComputer;
     }
 
     refresh() {
@@ -41,37 +37,8 @@ class GameLocalStorage {
         this.setGameFieldToLocalStorrage(field.join(","));
     }
 
-    isFieldSizeFromLocalStorrageUndefined() {
-        return (this.#gameLocalStorage[this.#fieldNameOfGameFieldSize] === undefined
-        || isNaN(this.#gameLocalStorage[this.#fieldNameOfGameFieldSize])
-        );
-    }
-
-    isFieldFromLocalStorrageEmpty() {
-        console.log(this.#gameLocalStorage);
-        return this.#gameLocalStorage[this.#fieldNameOfGameField]  === undefined;
-    }
-
-    isCurrentStepSymbolUndefined() {
-        this.#gameLocalStorage[this.#fieldNameOfCurrentSymbol] === undefined;
-    }
-
-    isGameVsComputerUndefined() {
-        return this.#gameLocalStorage[this.#fieldNameOfIsGameVsComputer] === undefined;
-    }
-
-    isCellsForWinUndefined() {
-        this.#gameLocalStorage[this.#fieldNameOfCellsForWin] === undefined;
-    }
-
-    isOneOfFieldUndefined() {
-        return (
-            this.isGameVsComputerUndefined() 
-            || this.isCurrentStepSymbolUndefined()
-            || this.isFieldFromLocalStorrageEmpty()
-            || this.isFieldSizeFromLocalStorrageUndefined()
-            || this.isCellsForWinUndefined()
-        );
+    clear() {
+        this.#gameLocalStorage.clear();
     }
 
     getFieldSize() {
@@ -95,6 +62,13 @@ class GameLocalStorage {
         return this.#gameLocalStorage[this.#fieldNameOfCellsForWin];
     }
 
+    setDefaultData() {
+        this.setFieldSize(initialFieldSize);
+        this.setCurrentStepSymbol(firstStepSymbol);
+        this.setIsGameVsComputer(initialIsGameVsComputer);
+        this.setCellsQuantityForWin(initialCellsForWin);
+    }
+
     setFieldSize(fieldSize) {
         this.#gameLocalStorage[this.#fieldNameOfGameFieldSize] = fieldSize;
     }
@@ -114,7 +88,38 @@ class GameLocalStorage {
     setCellsQuantityForWin(newCellSizeForWin) {
         this.#gameLocalStorage[this.#fieldNameOfCellsForWin] = newCellSizeForWin;
     }
-      
+
+    isOneOfFieldUndefined() {
+        return (
+            this.isGameVsComputerUndefined() 
+            || this.isCurrentStepSymbolUndefined()
+            || this.isFieldFromLocalStorrageEmpty()
+            || this.isFieldSizeFromLocalStorrageUndefined()
+            || this.isCellsForWinUndefined()
+        );
+    }
+
+    isGameVsComputerUndefined() {
+        return this.#gameLocalStorage[this.#fieldNameOfIsGameVsComputer] === undefined;
+    }
+
+    isCurrentStepSymbolUndefined() {
+        this.#gameLocalStorage[this.#fieldNameOfCurrentSymbol] === undefined;
+    }
+
+    isFieldFromLocalStorrageEmpty() {
+        return this.#gameLocalStorage[this.#fieldNameOfGameField]  === undefined;
+    }
+
+    isFieldSizeFromLocalStorrageUndefined() {
+        return (this.#gameLocalStorage[this.#fieldNameOfGameFieldSize] === undefined
+        || isNaN(this.#gameLocalStorage[this.#fieldNameOfGameFieldSize])
+        );
+    }
+    
+    isCellsForWinUndefined() {
+        this.#gameLocalStorage[this.#fieldNameOfCellsForWin] === undefined;
+    }
 }
 
 export default GameLocalStorage;

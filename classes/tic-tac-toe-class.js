@@ -3,13 +3,15 @@
 import {
     initialFieldSize,
     fieldIdName,
+    fieldSizeSelectIdName,
+    fieldCellsSizeForWinSelectIdName
     } from "../constants/constants.js";
 
-import GameSymbols from "./gameSymbolsClass.js";
-import GameMode from "./gameModeClass.js";
-import GameLocalStorage from "./gameLocalStorageClass.js";
-import HtmlCellsField from "./htmlGameFieldClass.js";
-import CellsField from "./gameFieldClass.js";
+import GameSymbols from "./game-symbols-class.js";
+import GameMode from "./game-mode-class.js";
+import GameLocalStorage from "./game-local-storage-class.js";
+import HtmlCellsField from "./html-game-field-class.js";
+import CellsField from "./game-field-class.js";
 
 import { onPlayerVsComputerButtonClick } from "../app.js";
 
@@ -19,12 +21,13 @@ class TicTacToeGame {
     #isGameStarts;
     
     constructor() {
+        this.fieldName = fieldIdName;
+        this.#isGameStarts = false;
+
         this.gameField = new CellsField(initialFieldSize);
         this.htmlGameField = new HtmlCellsField();
-        this.fieldName = fieldIdName;
         this.#gameSymbols = new GameSymbols();
         this.#gameMode = new GameMode();
-        this.#isGameStarts = false;
         this.gameStorage = new GameLocalStorage();
     }
 
@@ -71,25 +74,37 @@ class TicTacToeGame {
         this.htmlGameField.generateField(fieldSize); 
         this.gameField.lenghtForWin = currentLenghtForWin;
 
-        if(this.gameStorage.getIsGameVsComputer() === "true") {
-            onPlayerVsComputerButtonClick(false)
-        }
+        this.setGameModeFromLocalStorage();
+        this.setSymbolsFromLocalStorageOnFields(fieldFromLocalStorage);
+        this.setGameHeadingMessageFromLocalStorage();
+        this.#gameSymbols.currentStepSymbol = currentStepSymbol;
+        this.setInputValuesFromLocalStorrage(fieldSize, currentLenghtForWin);
+    }
 
+    setSymbolsFromLocalStorageOnFields(fieldFromLocalStorage) {
         fieldFromLocalStorage.forEach((currentCell, cellIndex) => {
             this.gameField.setSymbolToSelectedFieldCell(currentCell, cellIndex);
             this.htmlGameField.setSymbolToSelctedHtmlCell(currentCell, cellIndex);
         });
+    }
 
+    setGameModeFromLocalStorage() {
+        if(this.gameStorage.getIsGameVsComputer() === "true") {
+            onPlayerVsComputerButtonClick(false)
+        }
+    }
+
+    setGameHeadingMessageFromLocalStorage(){
         if ((this.getGameEndMessage() === "") === false) {
             const currentHeadingMessage = this.getGameEndMessage();
             this.htmlGameField.setHeadingInnerHtml(currentHeadingMessage);
             this.toggleIsGameStarts();
         }
+    }
 
-        this.#gameSymbols.currentStepSymbol = currentStepSymbol;
-
-        document.getElementById("fieldSizeSelect").value = fieldSize;
-        document.getElementById("fieldCellsCizeForWinSelect").value = currentLenghtForWin;
+    setInputValuesFromLocalStorrage(fieldSize, currentLenghtForWin) {
+        document.getElementById(fieldSizeSelectIdName).value = fieldSize;
+        document.getElementById(fieldCellsSizeForWinSelectIdName).value = currentLenghtForWin;
     }
 
     toggleIsGameStarts() {

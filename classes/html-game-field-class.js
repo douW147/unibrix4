@@ -1,8 +1,10 @@
 "use strict"
 
 import {
+    firstStepSymbol,
     firstStepSymbolClassName, 
     secondStepSymbolClassName,
+    secondStepSymbol,
     fieldRowIdAndClassName,
     fieldRowTagName,
     fieldCellTagName,
@@ -19,30 +21,33 @@ class HtmlCellsField {
     #firstStepSymbolClassName;
     #secondStepSymbol;
     #secondStepSymbolClassName;
-    #_field;
-    #_fieldIdName;
-    #_rowIdAndClassName;
-    #_rowTagName;
-    #_cellTagName;
-    #_cellIdName;
-    #_cellClassName;
+    #field;
+    #fieldIdName;
+    #rowIdAndClassName;
+    #rowTagName;
+    #cellTagName;
+    #cellIdName;
+    #cellClassName;
     #htmlMessageHeading;
     #allHtmlCells;
 
     constructor() {
-        this.#firstStepSymbol = "X";
-        this.#secondStepSymbol = "O";
+        this.#firstStepSymbol = firstStepSymbol;
+        this.#secondStepSymbol = secondStepSymbol;
         this.#firstStepSymbolClassName = firstStepSymbolClassName;
         this.#secondStepSymbolClassName = secondStepSymbolClassName;
-        this.#_rowIdAndClassName = fieldRowIdAndClassName;
-        this.#_rowTagName = fieldRowTagName;
-        this.#_cellTagName = fieldCellTagName;
-        this.#_cellIdName = cellIdName;
-        this.#_cellClassName = cellClassName;
-        this.#_fieldIdName = fieldIdName;
-        this.#_field = this.generateField(initialFieldSize);
+
+        this.#cellTagName = fieldCellTagName;
+        this.#cellIdName = cellIdName;
+        this.#cellClassName = cellClassName;
+        this.#rowIdAndClassName = fieldRowIdAndClassName;
+        this.#rowTagName = fieldRowTagName;
+        this.#fieldIdName = fieldIdName;
+
+        this.#field = this.generateField(initialFieldSize);
+
         this.#htmlMessageHeading = document.getElementById(headingMessageIdName);
-        this.#allHtmlCells = document.getElementsByClassName(this.#_cellClassName);
+        this.#allHtmlCells = document.getElementsByClassName(this.#cellClassName);
     }
 
     refreshHtnlCells() {
@@ -84,12 +89,12 @@ class HtmlCellsField {
 
     generateField(fieldSize) {
         let currentCellId = 0;
-        const field = document.getElementById(this.#_fieldIdName);
+        const field = document.getElementById(this.#fieldIdName);
         field.innerHTML = "";
 
         for (let rowIndex = 0; rowIndex < fieldSize; rowIndex++) {
             const row = this.generateRow();
-
+            
             for (let columnIndex = 0; columnIndex < fieldSize; columnIndex++) {
                 const cell = this.generateCell(currentCellId);
                 row.appendChild(cell);
@@ -100,23 +105,23 @@ class HtmlCellsField {
         }
     }
 
-    generateCell(cellId) {
-        const cell = document.createElement(this.#_cellTagName);
+    generateRow() {
+        const row = document.createElement(this.#rowTagName);
 
-        cell.setAttribute("id", `${this.#_cellIdName}${cellId}`);
-        cell.classList.add(this.#_cellClassName);
+        row.setAttribute("id", this.#rowIdAndClassName);
+        row.classList.add(this.#rowIdAndClassName);
+
+        return row;
+    }
+
+    generateCell(cellId) {
+        const cell = document.createElement(this.#cellTagName);
+
+        cell.setAttribute("id", `${this.#cellIdName}${cellId}`);
+        cell.classList.add(this.#cellClassName);
         cell.addEventListener('click', onCellClick);
 
         return cell;
-    }
-
-    generateRow() {
-        const row = document.createElement(this.#_rowTagName);
-
-        row.setAttribute("id", this.#_rowIdAndClassName);
-        row.classList.add(this.#_rowIdAndClassName);
-
-        return row;
     }
 } 
 

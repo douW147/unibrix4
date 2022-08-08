@@ -1,17 +1,20 @@
 "use strict";
 
-import GameInitializationButton from "./classes/gameInitializationButtonClass.js";
-import TicTacToeGame from "./classes/ticTacToeClass.js";
+import GameInitializationButton from "./classes/game-initialization-button-class.js";
+import TicTacToeGame from "./classes/tic-tac-toe-class.js";
 
-const fieldCellIdName = "cell";
-const disableButtonClassName = "controll-buttons__controll-button_disabled";
+import {
+    fieldCellIdName, 
+    disableButtonClassName,
+    refreshButton,
+    playerVsPlayerButton,
+    playerVsComputerButton,
+    fieldSizeSelect,
+    cellForWinSelect,
+    HtmlGameInitializationButton
+} from "./constants/constants.js";
 
-const refreshButton = document.getElementById("refreshButton");
-const playerVsPlayerButton = document.getElementById("playerVsPlayerButton");
-const playerVsComputerButton = document.getElementById("playerVsComputerButton");
-const fieldSizeSelect = document.getElementById("fieldSizeSelect");
-const HtmlGameInitializationButton = document.getElementById("gameInitializationButton");
-const cellForWinSelect = document.getElementById("fieldCellsCizeForWinSelect");
+
 
 const ticTacToeGame = new TicTacToeGame();
 const gameInitializationButton = new GameInitializationButton(true);
@@ -50,8 +53,7 @@ function onGameInitializationButtonClick(event) {
     if (!ticTacToeGame.gameStorage.isOneOfFieldUndefined()) {
         ticTacToeGame.setGameDataFromLocalStorrage();
     } else {
-        ticTacToeGame.gameStorage.isGameVsComputer = false;
-        ticTacToeGame.gameStorage.setCellsQuantityForWin = 3;
+        ticTacToeGame.gameStorage.setDefaultData();
     };
 
     event.target.classList.add(disableButtonClassName);
@@ -104,7 +106,7 @@ function onFieldSizeSelectChange(event) {
         return    
     }
 
-    if (! gameInitializationButton.isClicked) {
+    if (!gameInitializationButton.isClicked) {
         ticTacToeGame.refreshGame();
     }
     
@@ -119,6 +121,11 @@ function onCellSizeForWinChange(event) {
 
     if (newCellSizeForWin < 3 || newCellSizeForWin > 100) {
         window.alert("Must be in range(3, 100)");
+        return    
+    }
+
+    if (newCellSizeForWin > ticTacToeGame.gameField.fieldSize) {
+        window.alert("Must be less then field size");
         return    
     }
 
