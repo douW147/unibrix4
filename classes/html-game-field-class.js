@@ -21,7 +21,6 @@ class HtmlCellsField {
     #firstStepSymbolClassName;
     #secondStepSymbol;
     #secondStepSymbolClassName;
-    #field;
     #fieldIdName;
     #rowIdAndClassName;
     #rowTagName;
@@ -44,7 +43,7 @@ class HtmlCellsField {
         this.#rowTagName = fieldRowTagName;
         this.#fieldIdName = fieldIdName;
 
-        this.#field = this.generateField(initialFieldSize);
+        this.generateField(initialFieldSize);
 
         this.#htmlMessageHeading = document.getElementById(headingMessageIdName);
         this.#allHtmlCells = document.getElementsByClassName(this.#cellClassName);
@@ -66,6 +65,7 @@ class HtmlCellsField {
 
     setHeadingInnerHtml(message) {
         this.#htmlMessageHeading.innerHTML = message;
+
         if (message.slice(0, 1) === this.#firstStepSymbol) {
             this.#htmlMessageHeading.classList.remove(this.#secondStepSymbolClassName);
             this.#htmlMessageHeading.classList.add(this.#firstStepSymbolClassName);

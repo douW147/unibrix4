@@ -3,9 +3,7 @@
 import {initialCellsForWin} from "../constants/constants.js";
 
 class CellsField {
-    #field;
     #gameFieldWithRowAndCols
-    #winCombinations;
     #fieldSize;
     #lenghtForWin;
 
@@ -87,12 +85,14 @@ class CellsField {
     isWinOnRow(currentSymbol) {
         for (let rowIndex = 0; rowIndex < this.#gameFieldWithRowAndCols.length; rowIndex++) {
             let currentStrick = 0;
+
             for (let columnIndex = 0; columnIndex < this.#gameFieldWithRowAndCols[rowIndex].length; columnIndex++) {
                 if (this.#gameFieldWithRowAndCols[rowIndex][columnIndex] === currentSymbol) {
                     currentStrick++;
                 } else {
                     currentStrick = 0;
                 }
+
                 if (currentStrick === this.#lenghtForWin) {
                     return true;
                 }
@@ -103,12 +103,14 @@ class CellsField {
     isWinOnColumn(currentSymbol) {
         for (let rowIndex = 0; rowIndex < this.#gameFieldWithRowAndCols.length; rowIndex++) {
             let currentStrick = 0;
+
             for (let columnIndex = 0; columnIndex < this.#gameFieldWithRowAndCols[rowIndex].length; columnIndex++) {
                 if (this.#gameFieldWithRowAndCols[columnIndex][rowIndex] === currentSymbol) {
                     currentStrick++;
                 } else {
                     currentStrick = 0;
                 }
+
                 if (currentStrick === this.#lenghtForWin) {
                     return true;
                 }
@@ -128,6 +130,7 @@ class CellsField {
                         && this.#gameFieldWithRowAndCols[rowShiftedIndex][columnShiftedIndex] === currentSymbol) {
                         currentStrick++;
                     }
+
                     if (currentStrick === this.#lenghtForWin) {
                         return true
                     }
@@ -148,6 +151,7 @@ class CellsField {
                         && this.#gameFieldWithRowAndCols[columnShiftedIndex][rowShiftedIndex] === currentSymbol) {
                         currentStrick++;
                     }
+
                     if (currentStrick === this.#lenghtForWin) {
                         return true
                     }

@@ -16,8 +16,6 @@ import {
     htmlHintHeading
 } from "./constants/constants.js";
 
-
-
 const ticTacToeGame = new TicTacToeGame();
 const gameInitializationButton = new GameInitializationButton(true);
 

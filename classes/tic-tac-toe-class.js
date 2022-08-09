@@ -97,6 +97,7 @@ class TicTacToeGame {
     setGameHeadingMessageFromLocalStorage(){
         if ((this.getGameEndMessage() === "") === false) {
             const currentHeadingMessage = this.getGameEndMessage();
+            
             this.htmlGameField.setHeadingInnerHtml(currentHeadingMessage);
             this.toggleIsGameStarts();
         }
