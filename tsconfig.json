@@ -4,7 +4,7 @@
       "allowJs": true,
       "target": "ES2017"
     },
-    "include": ["./src/**/*"],
+    "include": ["./src/**/*", "index.ts"],
     "exclude": [
       "typings/browser.d.ts",
       "typings/browser",
