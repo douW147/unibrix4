@@ -15,12 +15,12 @@ export const cellIdName = "cell";
 
 export const fieldNameOfCurrentGameMode = "gameMode";
 export const fieldNameOfCellsForWin = "fieldNameOfCellsForWin";
-export const fieldNameOfGameFieldSize = "fieldSize";
+export const fieldNameOfGamefieldSize = "fieldSize";
 export const fieldNameOfCurrentSymbol = "currentSymbol";
 
 export const initialCellsForWin = 3;
 export const initialIsGameVsComputer  = false;
-export const initialFieldSize = 3;
+export const initialfieldSize = 3;
 
 export const headingMessageIdName = "messageHeading";
 
@@ -34,8 +34,8 @@ export const hintHeadingIdName = "hintHeading";
 export const hintHeadingDisableClassName = "hint-container__heading_disable";
 
 export const refreshButton = document.getElementById(refreshButtonIdName);
-export const playerVsPlayerButton = document.getElementById(playerVsPlayerButtonIdName);
-export const playerVsComputerButton = document.getElementById(playerVsComputerButtonIdName);
+export const playerVsPlayerButton = document.getElementById(playerVsPlayerButtonIdName) as HTMLInputElement;
+export const playerVsComputerButton = document.getElementById(playerVsComputerButtonIdName) as HTMLInputElement;
 export const fieldSizeSelect = document.getElementById(fieldSizeSelectIdName);
 export const HtmlGameInitializationButton = document.getElementById(gameInitializationButtonIdName);
 export const cellForWinSelect = document.getElementById(fieldCellsSizeForWinSelectIdName);

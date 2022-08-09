@@ -1,25 +1,25 @@
 "use strict"
 
 class GameMode {
-    #isGameVsComputer;
+    private _isGameVsComputer: boolean;
     constructor() {
-        this.#isGameVsComputer = false;
+        this._isGameVsComputer = false;
     }
 
     get isGameVsComputer() {
-        return this.#isGameVsComputer;
+        return this._isGameVsComputer;
     }
 
     set isGameVsComputer(newIsGameVsComputerValue) {
-        this.#isGameVsComputer = newIsGameVsComputerValue;
+        this._isGameVsComputer = newIsGameVsComputerValue;
     }
 
     isPlayerVsPlayerGameMode() {
-        return this.#isGameVsComputer;
+        return this._isGameVsComputer;
     }
 
     isPlayerVsComputerGameMode() {
-        return !this.#isGameVsComputer;
+        return !this._isGameVsComputer;
     }
 }
 

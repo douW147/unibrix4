@@ -3,19 +3,20 @@
 import {gameInitializationButtonIdName} from "../constants/constants.js";
 
 class GameInitializationButton {
-    #isAvailible;
-    
+    private isAvailible: boolean;
+    htmlButton: HTMLElement;
+
     constructor() {
-        this.#isAvailible = true;
+        this.isAvailible = true;
         this.htmlButton = document.getElementById(gameInitializationButtonIdName)
     }
 
     get isClicked() {
-        return this.#isAvailible;
+        return this.isAvailible;
     }
 
     set isClicked(isAvailible) {
-        this.#isAvailible = isAvailible;
+        this.isAvailible = isAvailible;
     }
 }
 

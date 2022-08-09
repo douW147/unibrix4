@@ -21,8 +21,12 @@ const gameInitializationButton = new GameInitializationButton();
 
 HtmlGameInitializationButton.addEventListener("click", onGameInitializationButtonClick);
 refreshButton.addEventListener("click", onRefreshClick);
-playerVsPlayerButton.addEventListener("click", onPlayerVsPlayerButtonClick);
-playerVsComputerButton.addEventListener("click", onPlayerVsComputerButtonClick);
+playerVsPlayerButton.addEventListener("click", () => {
+    onPlayerVsPlayerButtonClick();
+});
+playerVsComputerButton.addEventListener("click", () => {
+    onPlayerVsComputerButtonClick();
+});
 fieldSizeSelect.onchange = onFieldSizeSelectChange;
 cellForWinSelect.onchange = onCellSizeForWinChange;
 
@@ -125,12 +129,12 @@ function onCellSizeForWinChange(event) {
         return    
     }
 
-    if (newCellSizeForWin > ticTacToeGame.gameField.fieldSize) {
+    if (newCellSizeForWin > ticTacToeGame.gameField.getFieldSize()) {
         window.alert("Must be less then field size");
         return    
     }
 
-    ticTacToeGame.gameField.lenghtForWin = newCellSizeForWin;
+    ticTacToeGame.gameField.setLenghtForWin(newCellSizeForWin);
     ticTacToeGame.gameStorage.setCellsQuantityForWin(newCellSizeForWin);
 }
 
