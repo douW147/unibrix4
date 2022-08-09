@@ -17,7 +17,7 @@ import {
 } from "./constants/constants.js";
 
 const ticTacToeGame = new TicTacToeGame();
-const gameInitializationButton = new GameInitializationButton(true);
+const gameInitializationButton = new GameInitializationButton();
 
 HtmlGameInitializationButton.addEventListener("click", onGameInitializationButtonClick);
 refreshButton.addEventListener("click", onRefreshClick);

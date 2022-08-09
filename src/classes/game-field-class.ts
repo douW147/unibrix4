@@ -3,15 +3,16 @@
 import {initialCellsForWin} from "../constants/constants.js";
 
 class CellsField {
-    #gameFieldWithRowAndCols
+    gameFieldWithRowAndCols
     #fieldSize;
     #lenghtForWin;
+    private field
 
     constructor(fieldSize) {
         this.field;
         this.#fieldSize = parseInt(fieldSize);
         this.generateField(fieldSize);
-        this.#gameFieldWithRowAndCols = this.generateFieldWithRowAndCols();
+        this.gameFieldWithRowAndCols = this.generateFieldWithRowAndCols();
         this.#lenghtForWin = initialCellsForWin;
     }
 
@@ -55,13 +56,13 @@ class CellsField {
 
     isCellExistsOnField(firstIndex, secondIndex) {
         return (
-            this.#gameFieldWithRowAndCols[firstIndex] !== undefined 
-            && this.#gameFieldWithRowAndCols[firstIndex][secondIndex] !== undefined
+            this.gameFieldWithRowAndCols[firstIndex] !== undefined 
+            && this.gameFieldWithRowAndCols[firstIndex][secondIndex] !== undefined
         );
     }
 
     isWinCombination(currentSymbol) {
-        this.#gameFieldWithRowAndCols = this.generateFieldWithRowAndCols();
+        this.gameFieldWithRowAndCols = this.generateFieldWithRowAndCols();
 
         if (this.isWinOnRow(currentSymbol)) {
             return true;
@@ -83,11 +84,11 @@ class CellsField {
     }
 
     isWinOnRow(currentSymbol) {
-        for (let rowIndex = 0; rowIndex < this.#gameFieldWithRowAndCols.length; rowIndex++) {
+        for (let rowIndex = 0; rowIndex < this.gameFieldWithRowAndCols.length; rowIndex++) {
             let currentStrick = 0;
 
-            for (let columnIndex = 0; columnIndex < this.#gameFieldWithRowAndCols[rowIndex].length; columnIndex++) {
-                if (this.#gameFieldWithRowAndCols[rowIndex][columnIndex] === currentSymbol) {
+            for (let columnIndex = 0; columnIndex < this.gameFieldWithRowAndCols[rowIndex].length; columnIndex++) {
+                if (this.gameFieldWithRowAndCols[rowIndex][columnIndex] === currentSymbol) {
                     currentStrick++;
                 } else {
                     currentStrick = 0;
@@ -101,11 +102,11 @@ class CellsField {
     }
 
     isWinOnColumn(currentSymbol) {
-        for (let rowIndex = 0; rowIndex < this.#gameFieldWithRowAndCols.length; rowIndex++) {
+        for (let rowIndex = 0; rowIndex < this.gameFieldWithRowAndCols.length; rowIndex++) {
             let currentStrick = 0;
 
-            for (let columnIndex = 0; columnIndex < this.#gameFieldWithRowAndCols[rowIndex].length; columnIndex++) {
-                if (this.#gameFieldWithRowAndCols[columnIndex][rowIndex] === currentSymbol) {
+            for (let columnIndex = 0; columnIndex < this.gameFieldWithRowAndCols[rowIndex].length; columnIndex++) {
+                if (this.gameFieldWithRowAndCols[columnIndex][rowIndex] === currentSymbol) {
                     currentStrick++;
                 } else {
                     currentStrick = 0;
@@ -119,15 +120,15 @@ class CellsField {
     }
 
     isWinOnMainDiagonal(currentSymbol) {
-        for (let rowIndex = 0; rowIndex < this.#gameFieldWithRowAndCols.length; rowIndex++) {
-            for (let columnIndex = 0; columnIndex < this.#gameFieldWithRowAndCols[rowIndex].length; columnIndex++) {
+        for (let rowIndex = 0; rowIndex < this.gameFieldWithRowAndCols.length; rowIndex++) {
+            for (let columnIndex = 0; columnIndex < this.gameFieldWithRowAndCols[rowIndex].length; columnIndex++) {
                 let currentStrick = 0;
                 for (let indexDelta = 0; indexDelta < this.#lenghtForWin + 1; indexDelta++) {
                     const rowShiftedIndex = rowIndex + indexDelta;
                     const columnShiftedIndex = columnIndex + indexDelta;
 
                     if (this.isCellExistsOnField(rowShiftedIndex, columnShiftedIndex)
-                        && this.#gameFieldWithRowAndCols[rowShiftedIndex][columnShiftedIndex] === currentSymbol) {
+                        && this.gameFieldWithRowAndCols[rowShiftedIndex][columnShiftedIndex] === currentSymbol) {
                         currentStrick++;
                     }
 
@@ -140,15 +141,15 @@ class CellsField {
     }
 
     isWinOnSecondaryDiagonal(currentSymbol) {
-        for (let rowIndex = 0; rowIndex < this.#gameFieldWithRowAndCols.length; rowIndex++) {
-            for (let columnIndex = 0; columnIndex < this.#gameFieldWithRowAndCols[rowIndex].length; columnIndex++) {
+        for (let rowIndex = 0; rowIndex < this.gameFieldWithRowAndCols.length; rowIndex++) {
+            for (let columnIndex = 0; columnIndex < this.gameFieldWithRowAndCols[rowIndex].length; columnIndex++) {
                 let currentStrick = 0;
                 for (let indexDelta = 0; indexDelta < this.#lenghtForWin + 1; indexDelta++) {
                     const rowShiftedIndex = rowIndex + indexDelta;
                     const columnShiftedIndex = columnIndex - indexDelta;
                     
                     if (this.isCellExistsOnField(columnShiftedIndex, rowShiftedIndex)
-                        && this.#gameFieldWithRowAndCols[columnShiftedIndex][rowShiftedIndex] === currentSymbol) {
+                        && this.gameFieldWithRowAndCols[columnShiftedIndex][rowShiftedIndex] === currentSymbol) {
                         currentStrick++;
                     }
 
@@ -167,17 +168,17 @@ class CellsField {
     }
 
     generateFieldWithRowAndCols() {
-        this.#gameFieldWithRowAndCols = [];
+        this.gameFieldWithRowAndCols = [];
         const rowLimits = [0, this.#fieldSize];
 
         for (let index = 0; index < this.#fieldSize; index++) {
-            this.#gameFieldWithRowAndCols.push([...this.field.slice(rowLimits[0], rowLimits[1])]);
+            this.gameFieldWithRowAndCols.push([...this.field.slice(rowLimits[0], rowLimits[1])]);
 
             rowLimits[0] += this.#fieldSize;
             rowLimits[1] += this.#fieldSize;
         }
 
-        return this.#gameFieldWithRowAndCols;
+        return this.gameFieldWithRowAndCols;
     }
 }
 
