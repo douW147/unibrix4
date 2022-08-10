@@ -11,7 +11,7 @@ class GameInitializationButton {
         this.htmlButton = document.getElementById(gameInitializationButtonIdName)
     }
 
-    get isClicked() {
+    get isClicked(): boolean {
         return this.isAvailible;
     }
 

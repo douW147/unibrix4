@@ -29,10 +29,10 @@ class CellsField {
         this.field[selectedCellNumber] = currentStepSymbol;
     }
     setLenghtForWin(newlenghtForWin) {
-        this.lenghtForWin = parseInt(newlenghtForWin);
+        this.lenghtForWin = newlenghtForWin;
     }
-    isCellEmpty(cellNumber) {
-        return this.field[cellNumber] === "";
+    isCellEmpty(cellIndex) {
+        return this.field[cellIndex] === "";
     }
     isAllCellsTaken() {
         return this.field.every((cell) => cell !== "");
@@ -127,7 +127,7 @@ class CellsField {
     }
     generateField(fieldSize) {
         this.field = new Array(fieldSize * fieldSize).fill("");
-        this.fieldSize = parseInt(fieldSize);
+        this.fieldSize = fieldSize;
     }
     generateFieldWithRowAndCols() {
         this.gameFieldWithRowAndCols = [];

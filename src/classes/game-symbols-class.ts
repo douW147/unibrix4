@@ -17,15 +17,15 @@ class GameSymbols {
         this._currentStepSymbol = this._firstStepSymbol;
     }
 
-    get firstStepSymbol () {
+    get firstStepSymbol(): string {
         return this._firstStepSymbol;
     }
 
-    get currentStepSymbol() {
+    get currentStepSymbol(): string {
         return this._currentStepSymbol;
     }
 
-    set currentStepSymbol(stepSymbol) {
+    set currentStepSymbol(stepSymbol: string) {
         this._currentStepSymbol = stepSymbol;
     }
 

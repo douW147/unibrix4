@@ -14,7 +14,7 @@ import {
 
 class GameLocalStorage {
     private fieldNameOfGameField: string;
-    private gameLocalStorage;
+    private gameLocalStorage: Storage;
     fieldNameOfGameFieldSize: string;
     private fieldNameOfCurrentSymbol: string;
     private fieldNameOfIsGameVsComputer: string;
@@ -31,35 +31,37 @@ class GameLocalStorage {
 
     refresh() {
         const field = this.getField();
+
         for (let cellIndex = 0; cellIndex < field.length; cellIndex++) {
             field[cellIndex] = "";
         }
-        this.setGameFieldToLocalStorrage(field.join(","));
+        console.log(field.join(","))
+        this.setGameFieldToLocalStorrage(field.join(",").toString());
     }
 
     clear() {
         this.gameLocalStorage.clear();
     }
 
-    getfieldSize() {
-        return this.gameLocalStorage[this.fieldNameOfGameFieldSize];
+    getfieldSize(): number {
+        return parseInt(this.gameLocalStorage[this.fieldNameOfGameFieldSize]);
     }
     
-    getField() {
+    getField(): string[] {
         const fieldArray = this.gameLocalStorage[this.fieldNameOfGameField].split(",");
         return fieldArray;
     }
 
-    getCurrentStepSymbol() {
+    getCurrentStepSymbol(): string {
         return this.gameLocalStorage[this.fieldNameOfCurrentSymbol];
     }
 
-    getIsGameVsComputer() {
+    getIsGameVsComputer(): string {
         return this.gameLocalStorage[this.fieldNameOfIsGameVsComputer];
     }
 
-    getCellsQuantityForWin() {
-        return this.gameLocalStorage[this.fieldNameOfCellsForWin];
+    getCellsQuantityForWin(): number {
+        return parseInt(this.gameLocalStorage[this.fieldNameOfCellsForWin]);
     }
 
     setDefaultData() {
@@ -73,19 +75,19 @@ class GameLocalStorage {
         this.gameLocalStorage[this.fieldNameOfGameFieldSize] = fieldSize;
     }
 
-    setGameFieldToLocalStorrage(value) {
-        this.gameLocalStorage.setItem(this.fieldNameOfGameField, value);
+    setGameFieldToLocalStorrage(value: string) {
+        this.gameLocalStorage.setItem(this.fieldNameOfGameField, value.toString());
     }
 
-    setCurrentStepSymbol(currentSymbol) {
+    setCurrentStepSymbol(currentSymbol: string) {
         this.gameLocalStorage[this.fieldNameOfCurrentSymbol] = currentSymbol;
     }
 
-    setIsGameVsComputer(currentGameMode) {
+    setIsGameVsComputer(currentGameMode: boolean) {
         this.gameLocalStorage[this.fieldNameOfIsGameVsComputer] = currentGameMode;
     }
 
-    setCellsQuantityForWin(newCellSizeForWin) {
+    setCellsQuantityForWin(newCellSizeForWin: number) {
         this.gameLocalStorage[this.fieldNameOfCellsForWin] = newCellSizeForWin;
     }
 

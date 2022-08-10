@@ -3,7 +3,7 @@
 import {initialCellsForWin} from "../constants/constants.js";
 
 class CellsField {
-    private gameFieldWithRowAndCols;
+    private gameFieldWithRowAndCols: string[][];
     private fieldSize: number;
     private lenghtForWin: number;
     field: string[];
@@ -20,7 +20,7 @@ class CellsField {
         this.field.fill("");
     }
 
-    getRandomCellIdForComputerStep() {
+    getRandomCellIdForComputerStep(): number {
         while (true) {
             const randomCellId = Math.floor(Math.random() * this.field.length);
 
@@ -30,38 +30,38 @@ class CellsField {
         }
     }
 
-    getLenghtForWin() {
+    getLenghtForWin(): number {
         return this.lenghtForWin;
     }
 
-    getFieldSize() {
+    getFieldSize(): number {
         return this.fieldSize;
     }
 
-    setSymbolToSelectedFieldCell(currentStepSymbol, selectedCellNumber) {
+    setSymbolToSelectedFieldCell(currentStepSymbol: string, selectedCellNumber: number) {
         this.field[selectedCellNumber] = currentStepSymbol;
     }
 
-    setLenghtForWin(newlenghtForWin) {
-        this.lenghtForWin = parseInt(newlenghtForWin);
+    setLenghtForWin(newlenghtForWin: number) {
+        this.lenghtForWin = newlenghtForWin;
     }
 
-    isCellEmpty(cellNumber) {
-        return this.field[cellNumber] === "";
+    isCellEmpty(cellIndex: number): boolean {
+        return this.field[cellIndex] === "";
     }
 
-    isAllCellsTaken() {
+    isAllCellsTaken(): boolean {
         return this.field.every((cell) => cell !== "");
     }
 
-    isCellExistsOnField(firstIndex, secondIndex) {
+    isCellExistsOnField(firstIndex: number, secondIndex: number): boolean {
         return (
             this.gameFieldWithRowAndCols[firstIndex] !== undefined 
             && this.gameFieldWithRowAndCols[firstIndex][secondIndex] !== undefined
         );
     }
 
-    isWinCombination(currentSymbol) {
+    isWinCombination(currentSymbol: string): boolean {
         this.gameFieldWithRowAndCols = this.generateFieldWithRowAndCols();
 
         if (this.isWinOnRow(currentSymbol)) {
@@ -83,7 +83,7 @@ class CellsField {
         return false;
     }
 
-    isWinOnRow(currentSymbol) {
+    isWinOnRow(currentSymbol: string) {
         for (let rowIndex = 0; rowIndex < this.gameFieldWithRowAndCols.length; rowIndex++) {
             let currentStrick = 0;
 
@@ -101,7 +101,7 @@ class CellsField {
         }
     }
 
-    isWinOnColumn(currentSymbol) {
+    isWinOnColumn(currentSymbol: string) {
         for (let rowIndex = 0; rowIndex < this.gameFieldWithRowAndCols.length; rowIndex++) {
             let currentStrick = 0;
 
@@ -119,7 +119,7 @@ class CellsField {
         }
     }
 
-    isWinOnMainDiagonal(currentSymbol) {
+    isWinOnMainDiagonal(currentSymbol: string) {
         for (let rowIndex = 0; rowIndex < this.gameFieldWithRowAndCols.length; rowIndex++) {
             for (let columnIndex = 0; columnIndex < this.gameFieldWithRowAndCols[rowIndex].length; columnIndex++) {
                 let currentStrick = 0;
@@ -140,7 +140,7 @@ class CellsField {
         }
     }
 
-    isWinOnSecondaryDiagonal(currentSymbol) {
+    isWinOnSecondaryDiagonal(currentSymbol: string) {
         for (let rowIndex = 0; rowIndex < this.gameFieldWithRowAndCols.length; rowIndex++) {
             for (let columnIndex = 0; columnIndex < this.gameFieldWithRowAndCols[rowIndex].length; columnIndex++) {
                 let currentStrick = 0;
@@ -162,12 +162,12 @@ class CellsField {
         }
     }
 
-    generateField(fieldSize) {
+    generateField(fieldSize: number) {
         this.field = new Array(fieldSize * fieldSize).fill("");
-        this.fieldSize = parseInt(fieldSize);
+        this.fieldSize = fieldSize;
     }
 
-    generateFieldWithRowAndCols() {
+    generateFieldWithRowAndCols(): string[][] {
         this.gameFieldWithRowAndCols = [];
         const rowLimits = [0, this.fieldSize];
 

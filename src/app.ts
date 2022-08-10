@@ -31,7 +31,7 @@ fieldSizeSelect.onchange = onFieldSizeSelectChange;
 cellForWinSelect.onchange = onCellSizeForWinChange;
 
 export function onCellClick(event) {
-    const clickedCellId = getCellIdFromIdName(event.target.id);
+    const clickedCellId = parseInt(getCellIdFromIdName(event.target.id));
 
     if (!ticTacToeGame.isPlayerCanStepToChosenCell(clickedCellId)) {
         return;
@@ -117,7 +117,7 @@ function onFieldSizeSelectChange(event) {
     
     ticTacToeGame.gameStorage.setFieldSize(newFieldSize);
     ticTacToeGame.gameField.generateField(newFieldSize);
-    ticTacToeGame.gameStorage.setGameFieldToLocalStorrage(ticTacToeGame.gameField.field);
+    ticTacToeGame.gameStorage.setGameFieldToLocalStorrage(ticTacToeGame.gameField.field.toString());
     ticTacToeGame.htmlGameField.generateField(newFieldSize);  
 }
 
@@ -138,8 +138,8 @@ function onCellSizeForWinChange(event) {
     ticTacToeGame.gameStorage.setCellsQuantityForWin(newCellSizeForWin);
 }
 
-function getCellIdFromIdName(cellId) {
+function getCellIdFromIdName(cellId: number) {
     const separatorIndex = fieldCellIdName.length;
-    const clickedCellId = cellId.slice(separatorIndex);
-    return clickedCellId;
+    const clickedCellIdString: string = cellId.toString().slice(separatorIndex);
+    return clickedCellIdString;
 }

@@ -55,7 +55,7 @@ class TicTacToeGame {
         this.setSymbolsFromLocalStorageOnFields(fieldFromLocalStorage);
         this.setGameHeadingMessageFromLocalStorage();
         this.gameSymbols.currentStepSymbol = currentStepSymbol;
-        this.setInputValuesFromLocalStorrage(fieldSize, currentlenghtForWin);
+        this.setInputValuesFromLocalStorrage(fieldSize.toString(), currentlenghtForWin.toString());
     }
     setSymbolsFromLocalStorageOnFields(fieldFromLocalStorage) {
         fieldFromLocalStorage.forEach((currentCell, cellIndex) => {
@@ -96,7 +96,8 @@ class TicTacToeGame {
         const currentStepSymbol = this.gameSymbols.currentStepSymbol;
         this.gameField.setSymbolToSelectedFieldCell(currentStepSymbol, clickedCellId);
         this.htmlGameField.setSymbolToSelctedHtmlCell(currentStepSymbol, clickedCellId);
-        this.gameStorage.setGameFieldToLocalStorrage(this.gameField.field);
+        console.log(this.gameField.field);
+        this.gameStorage.setGameFieldToLocalStorrage(this.gameField.field.toString());
         const currentHeadingMessage = this.getGameEndMessage();
         this.htmlGameField.setHeadingInnerHtml(currentHeadingMessage);
         this.gameSymbols.toggleCurrentStepSymbol();

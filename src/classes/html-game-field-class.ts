@@ -63,7 +63,7 @@ class HtmlCellsField {
         this.htmlMessageHeading.classList.remove(this.secondStepSymbolClassName);
     }
 
-    setHeadingInnerHtml(message) {
+    setHeadingInnerHtml(message: string) {
         this.htmlMessageHeading.innerHTML = message;
 
         if (message.slice(0, 1) === this.firstStepSymbol) {
@@ -76,7 +76,7 @@ class HtmlCellsField {
         }
     }
 
-    setSymbolToSelctedHtmlCell(currentStepSymbol, cellId) {
+    setSymbolToSelctedHtmlCell(currentStepSymbol: string, cellId: number) {
         const selectedCell = document.getElementById(`cell${cellId}`);
         selectedCell.innerHTML = currentStepSymbol;
 
@@ -87,7 +87,7 @@ class HtmlCellsField {
         }
     }
 
-    generateField(fieldSize) {
+    generateField(fieldSize: number) {
         let currentCellId = 0;
         const field = document.getElementById(this.fieldIdName);
         field.innerHTML = "";
@@ -105,7 +105,7 @@ class HtmlCellsField {
         }
     }
 
-    generateRow() {
+    generateRow(): HTMLElement {
         const row = document.createElement(this.rowTagName);
 
         row.setAttribute("id", this.rowIdAndClassName);
@@ -114,7 +114,7 @@ class HtmlCellsField {
         return row;
     }
 
-    generateCell(cellId) {
+    generateCell(cellId: number): HTMLElement {
         const cell = document.createElement(this.cellTagName);
 
         cell.setAttribute("id", `${this.cellIdName}${cellId}`);

@@ -14,13 +14,14 @@ class GameLocalStorage {
         for (let cellIndex = 0; cellIndex < field.length; cellIndex++) {
             field[cellIndex] = "";
         }
-        this.setGameFieldToLocalStorrage(field.join(","));
+        console.log(field.join(","));
+        this.setGameFieldToLocalStorrage(field.join(",").toString());
     }
     clear() {
         this.gameLocalStorage.clear();
     }
     getfieldSize() {
-        return this.gameLocalStorage[this.fieldNameOfGameFieldSize];
+        return parseInt(this.gameLocalStorage[this.fieldNameOfGameFieldSize]);
     }
     getField() {
         const fieldArray = this.gameLocalStorage[this.fieldNameOfGameField].split(",");
@@ -33,7 +34,7 @@ class GameLocalStorage {
         return this.gameLocalStorage[this.fieldNameOfIsGameVsComputer];
     }
     getCellsQuantityForWin() {
-        return this.gameLocalStorage[this.fieldNameOfCellsForWin];
+        return parseInt(this.gameLocalStorage[this.fieldNameOfCellsForWin]);
     }
     setDefaultData() {
         this.setFieldSize(initialfieldSize);
@@ -45,7 +46,7 @@ class GameLocalStorage {
         this.gameLocalStorage[this.fieldNameOfGameFieldSize] = fieldSize;
     }
     setGameFieldToLocalStorrage(value) {
-        this.gameLocalStorage.setItem(this.fieldNameOfGameField, value);
+        this.gameLocalStorage.setItem(this.fieldNameOfGameField, value.toString());
     }
     setCurrentStepSymbol(currentSymbol) {
         this.gameLocalStorage[this.fieldNameOfCurrentSymbol] = currentSymbol;

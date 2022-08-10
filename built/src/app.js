@@ -15,7 +15,7 @@ playerVsComputerButton.addEventListener("click", () => {
 fieldSizeSelect.onchange = onFieldSizeSelectChange;
 cellForWinSelect.onchange = onCellSizeForWinChange;
 export function onCellClick(event) {
-    const clickedCellId = getCellIdFromIdName(event.target.id);
+    const clickedCellId = parseInt(getCellIdFromIdName(event.target.id));
     if (!ticTacToeGame.isPlayerCanStepToChosenCell(clickedCellId)) {
         return;
     }
@@ -82,7 +82,7 @@ function onFieldSizeSelectChange(event) {
     }
     ticTacToeGame.gameStorage.setFieldSize(newFieldSize);
     ticTacToeGame.gameField.generateField(newFieldSize);
-    ticTacToeGame.gameStorage.setGameFieldToLocalStorrage(ticTacToeGame.gameField.field);
+    ticTacToeGame.gameStorage.setGameFieldToLocalStorrage(ticTacToeGame.gameField.field.toString());
     ticTacToeGame.htmlGameField.generateField(newFieldSize);
 }
 function onCellSizeForWinChange(event) {
@@ -100,6 +100,6 @@ function onCellSizeForWinChange(event) {
 }
 function getCellIdFromIdName(cellId) {
     const separatorIndex = fieldCellIdName.length;
-    const clickedCellId = cellId.slice(separatorIndex);
-    return clickedCellId;
+    const clickedCellIdString = cellId.toString().slice(separatorIndex);
+    return clickedCellIdString;
 }

@@ -46,7 +46,7 @@ class TicTacToeGame {
         }
     }
 
-    get gameMode() {
+    get gameMode(): _gameMode {
         return this._gameMode;
     }
 
@@ -54,7 +54,7 @@ class TicTacToeGame {
         return this.gameSymbols.refresh;
     }
 
-    getGameEndMessage() {
+    getGameEndMessage(): string {
         if (this.gameField.isWinCombination(this.gameSymbols.currentStepSymbol)) {
             this.toggleIsGameStarts();
             return `${this.gameSymbols.currentStepSymbol} wins`;
@@ -82,10 +82,10 @@ class TicTacToeGame {
         this.setSymbolsFromLocalStorageOnFields(fieldFromLocalStorage);
         this.setGameHeadingMessageFromLocalStorage();
         this.gameSymbols.currentStepSymbol = currentStepSymbol;
-        this.setInputValuesFromLocalStorrage(fieldSize, currentlenghtForWin);
+        this.setInputValuesFromLocalStorrage(fieldSize.toString(), currentlenghtForWin.toString());
     }
 
-    setSymbolsFromLocalStorageOnFields(fieldFromLocalStorage) {
+    setSymbolsFromLocalStorageOnFields(fieldFromLocalStorage: string[]) {
         fieldFromLocalStorage.forEach((currentCell, cellIndex) => {
             this.gameField.setSymbolToSelectedFieldCell(currentCell, cellIndex);
             this.htmlGameField.setSymbolToSelctedHtmlCell(currentCell, cellIndex);
@@ -107,7 +107,7 @@ class TicTacToeGame {
         }
     }
 
-    setInputValuesFromLocalStorrage(fieldSize, currentlenghtForWin) {
+    setInputValuesFromLocalStorrage(fieldSize: string, currentlenghtForWin: string) {
         const fieldSizeSelect = document.getElementById(fieldSizeSelectIdName) as HTMLInputElement;
         const fieldCellsSizeForWinSelect = document.getElementById(fieldCellsSizeForWinSelectIdName) as HTMLInputElement;
         
@@ -119,11 +119,11 @@ class TicTacToeGame {
         this.isGameStarts = !this.isGameStarts;
     }
 
-    isPlayerCanStepToChosenCell(clickedCellId) {
+    isPlayerCanStepToChosenCell(clickedCellId: number): boolean {
         return this.gameField.isCellEmpty(clickedCellId) && this.isGameStarts;
     }
 
-    isComputerCanStep() {
+    isComputerCanStep(): boolean {
         return (
             this._gameMode.isGameVsComputer 
             && !this.gameField.isAllCellsTaken() 
@@ -131,12 +131,13 @@ class TicTacToeGame {
         );
     }
 
-    makeStep(clickedCellId) {
+    makeStep(clickedCellId: number) {
         const currentStepSymbol = this.gameSymbols.currentStepSymbol;
 
         this.gameField.setSymbolToSelectedFieldCell(currentStepSymbol, clickedCellId);
         this.htmlGameField.setSymbolToSelctedHtmlCell(currentStepSymbol, clickedCellId);
-        this.gameStorage.setGameFieldToLocalStorrage(this.gameField.field);
+        console.log(this.gameField.field);
+        this.gameStorage.setGameFieldToLocalStorrage(this.gameField.field.toString());
 
         const currentHeadingMessage = this.getGameEndMessage();
         this.htmlGameField.setHeadingInnerHtml(currentHeadingMessage);

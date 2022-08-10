@@ -6,7 +6,7 @@ class GameMode {
         this._isGameVsComputer = false;
     }
 
-    get isGameVsComputer() {
+    get isGameVsComputer(): boolean {
         return this._isGameVsComputer;
     }
 
@@ -14,11 +14,11 @@ class GameMode {
         this._isGameVsComputer = newIsGameVsComputerValue;
     }
 
-    isPlayerVsPlayerGameMode() {
+    isPlayerVsPlayerGameMode(): boolean {
         return this._isGameVsComputer;
     }
 
-    isPlayerVsComputerGameMode() {
+    isPlayerVsComputerGameMode(): boolean {
         return !this._isGameVsComputer;
     }
 }
