@@ -10,7 +10,7 @@ import {
     initialfieldSize,
     initialCellsForWin,
     initialIsGameVsComputer
-} from "../constants/constants.js";
+} from "../constants/constants";
 
 class GameLocalStorage {
     private fieldNameOfGameField: string;

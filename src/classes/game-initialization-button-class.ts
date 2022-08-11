@@ -1,6 +1,6 @@
 "use strict"
 
-import {gameInitializationButtonIdName} from "../constants/constants.js";
+import {gameInitializationButtonIdName} from "../constants/constants";
 
 class GameInitializationButton {
     private isAvailible: boolean;

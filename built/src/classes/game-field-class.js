@@ -1,5 +1,5 @@
 "use strict";
-import { initialCellsForWin } from "../constants/constants.js";
+import { initialCellsForWin } from "../constants/constants";
 class CellsField {
     constructor(fieldSize) {
         this.field;

@@ -13,8 +13,8 @@ import {
     fieldIdName,
     initialfieldSize,
     headingMessageIdName
-} from "../constants/constants.js";
-import { onCellClick } from "../app.js";
+} from "../constants/constants";
+import { onCellClick } from "../app";
 
 class HtmlCellsField {
     private firstStepSymbol: string;

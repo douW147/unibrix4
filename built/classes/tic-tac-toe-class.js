@@ -1,11 +1,11 @@
 "use strict";
-import { initialfieldSize, fieldIdName, fieldSizeSelectIdName, fieldCellsSizeForWinSelectIdName } from "../constants/constants.js";
-import GameSymbols from "./game-symbols-class.js";
-import _gameMode from "./game-mode-class.js";
-import GameLocalStorage from "./game-local-storage-class.js";
-import HtmlCellsField from "./html-game-field-class.js";
-import CellsField from "./game-field-class.js";
-import { onPlayerVsComputerButtonClick } from "../app.js";
+import { initialfieldSize, fieldIdName, fieldSizeSelectIdName, fieldCellsSizeForWinSelectIdName } from "../constants/constants";
+import GameSymbols from "./game-symbols-class";
+import _gameMode from "./game-mode-class";
+import GameLocalStorage from "./game-local-storage-class";
+import HtmlCellsField from "./html-game-field-class";
+import CellsField from "./game-field-class";
+import { onPlayerVsComputerButtonClick } from "../app";
 class TicTacToeGame {
     constructor() {
         this.fieldName = fieldIdName;

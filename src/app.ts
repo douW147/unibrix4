@@ -1,7 +1,7 @@
 "use strict";
 
-import GameInitializationButton from "./classes/game-initialization-button-class.js";
-import TicTacToeGame from "./classes/tic-tac-toe-class.js";
+import GameInitializationButton from "./classes/game-initialization-button-class";
+import TicTacToeGame from "./classes/tic-tac-toe-class";
 
 import {
     fieldCellIdName, 
@@ -14,7 +14,7 @@ import {
     cellForWinSelect,
     HtmlGameInitializationButton,
     htmlHintHeading
-} from "./constants/constants.js";
+} from "./constants/constants";
 
 const ticTacToeGame = new TicTacToeGame();
 const gameInitializationButton = new GameInitializationButton();

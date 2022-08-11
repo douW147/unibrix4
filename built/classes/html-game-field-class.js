@@ -1,6 +1,6 @@
 "use strict";
-import { firstStepSymbol, firstStepSymbolClassName, secondStepSymbolClassName, secondStepSymbol, fieldRowIdAndClassName, fieldRowTagName, fieldCellTagName, cellIdName, cellClassName, fieldIdName, initialfieldSize, headingMessageIdName } from "../constants/constants.js";
-import { onCellClick } from "../app.js";
+import { firstStepSymbol, firstStepSymbolClassName, secondStepSymbolClassName, secondStepSymbol, fieldRowIdAndClassName, fieldRowTagName, fieldCellTagName, cellIdName, cellClassName, fieldIdName, initialfieldSize, headingMessageIdName } from "../constants/constants";
+import { onCellClick } from "../app";
 class HtmlCellsField {
     constructor() {
         this.firstStepSymbol = firstStepSymbol;

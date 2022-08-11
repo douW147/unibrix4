@@ -1,7 +1,7 @@
 "use strict";
-import GameInitializationButton from "./classes/game-initialization-button-class.js";
-import TicTacToeGame from "./classes/tic-tac-toe-class.js";
-import { fieldCellIdName, disableButtonClassName, hintHeadingDisableClassName, refreshButton, playerVsPlayerButton, playerVsComputerButton, fieldSizeSelect, cellForWinSelect, HtmlGameInitializationButton, htmlHintHeading } from "./constants/constants.js";
+import GameInitializationButton from "./classes/game-initialization-button-class";
+import TicTacToeGame from "./classes/tic-tac-toe-class";
+import { fieldCellIdName, disableButtonClassName, hintHeadingDisableClassName, refreshButton, playerVsPlayerButton, playerVsComputerButton, fieldSizeSelect, cellForWinSelect, HtmlGameInitializationButton, htmlHintHeading } from "./constants/constants";
 const ticTacToeGame = new TicTacToeGame();
 const gameInitializationButton = new GameInitializationButton();
 HtmlGameInitializationButton.addEventListener("click", onGameInitializationButtonClick);

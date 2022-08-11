@@ -1,5 +1,5 @@
 "use strict";
-import { fieldIdName, fieldNameOfGamefieldSize, fieldNameOfCurrentSymbol, fieldNameOfCurrentGameMode, fieldNameOfCellsForWin, firstStepSymbol, initialfieldSize, initialCellsForWin, initialIsGameVsComputer } from "../constants/constants.js";
+import { fieldIdName, fieldNameOfGamefieldSize, fieldNameOfCurrentSymbol, fieldNameOfCurrentGameMode, fieldNameOfCellsForWin, firstStepSymbol, initialfieldSize, initialCellsForWin, initialIsGameVsComputer } from "../constants/constants";
 class GameLocalStorage {
     constructor() {
         this.fieldNameOfGameField = fieldIdName;

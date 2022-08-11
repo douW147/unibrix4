@@ -1,6 +1,6 @@
 "use strict"
 
-import {firstStepSymbol, secondStepSymbol} from "../constants/constants.js";
+import {firstStepSymbol, secondStepSymbol} from "../constants/constants";
 
 class GameSymbols {
     private _firstStepSymbol: string;

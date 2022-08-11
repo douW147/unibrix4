@@ -1,5 +1,5 @@
 "use strict";
-import { gameInitializationButtonIdName } from "../constants/constants.js";
+import { gameInitializationButtonIdName } from "../constants/constants";
 class GameInitializationButton {
     constructor() {
         this.isAvailible = true;
