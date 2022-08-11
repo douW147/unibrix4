@@ -4,11 +4,11 @@
       "allowJs": true,
       "target": "ES2017"
     },
-    "include": ["./src/**/*", "index.ts"],
+    "include": ["./src/**/*", "src/index.ts", "index.js"],
     "exclude": [
       "typings/browser.d.ts",
       "typings/browser",
       "node_modules"
-    ]
-    
+    ],
+    "skipLibCheck": true
 }
