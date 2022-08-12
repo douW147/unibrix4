@@ -136,7 +136,6 @@ class TicTacToeGame {
 
         this.gameField.setSymbolToSelectedFieldCell(currentStepSymbol, clickedCellId);
         this.htmlGameField.setSymbolToSelctedHtmlCell(currentStepSymbol, clickedCellId);
-        console.log(this.gameField.field);
         this.gameStorage.setGameFieldToLocalStorrage(this.gameField.field.toString());
 
         const currentHeadingMessage = this.getGameEndMessage();
