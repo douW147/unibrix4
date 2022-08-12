@@ -24,11 +24,18 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   target: 'node', // use require() & use NodeJs CommonJS style
-    externals: [nodeExternals()], // in order to ignore all modules in node_modules folder
-    externalsPresets: {
-        node: true // in order to ignore built-in modules like path, fs, etc. 
-    },
-    plugins: [
-      new webpack.HotModuleReplacementPlugin(),
-    ]
+  externals: [nodeExternals()], // in order to ignore all modules in node_modules folder
+  externalsPresets: {
+    node: true // in order to ignore built-in modules like path, fs, etc. 
+  },
+  // devServer: {
+  //   port: 8080,
+  //   liveReload: true,
+  //   static: {
+  //     directory: path.join(__dirname, 'dist'),
+  //   },
+  // },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+  ]
 };
